@@ -10,11 +10,12 @@ import {
     Easing,
     Dimensions
 } from 'react-native';
-import wallpaper from '../../images/wallpaper.png';
-import Logo from './Logo';
-import LoginForm from './LoginForm';
-import spinner from '../../images/loading.gif';
-
+import wallpaper from '../images/wallpaper.png';
+import Logo from '../components/login/Logo';
+import LoginForm from '../components/login/LoginForm';
+import spinner from '../images/loading.gif';
+import { fetchCheckLogin } from '../actions';
+import { connect } from 'react-redux';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const MARGIN = 40;
@@ -31,6 +32,18 @@ class LoginScreen extends Component {
         this.growAnimated = new Animated.Value(0);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.currentUser.isLoggedIn) {
+            this.onGrow();
+            this.props.navigation.navigate('App');
+        }
+        else {
+            this.setState({ loading: false });
+            this.buttonAnimated.setValue(0);
+            this.growAnimated.setValue(0);
+        }
+    }
+
     updateUsernameText = (username) => {
         this.setState({ username });
     }
@@ -39,10 +52,9 @@ class LoginScreen extends Component {
     }
 
     onButtonPress = () => {
-        if (this.state.isLoading) return;
+        if (this.state.loading) return;
 
-        this.setState({ isLoading: true });
-
+        this.setState({ loading: true });
         Animated.timing(
             this.buttonAnimated,
             {
@@ -51,18 +63,7 @@ class LoginScreen extends Component {
                 easing: Easing.linear
             }
         ).start();
-
-        setTimeout(() => {
-            this.onGrow();
-        }, 2000);
-
-        setTimeout(() => {
-            this.setState({ isLoading: false });
-            this.buttonAnimated.setValue(0);
-            this.growAnimated.setValue(0);
-        }, 2300);
-
-        //login
+        this.props.fetchCheckLogin(this.state.username, this.state.password);
     }
 
     onGrow = () => {
@@ -88,6 +89,7 @@ class LoginScreen extends Component {
 
         return (
             <ImageBackground style={{ flex: 1 }} source={wallpaper}>
+
                 <Logo />
                 <LoginForm
                     usernameText={this.state.username}
@@ -95,9 +97,11 @@ class LoginScreen extends Component {
                     updateUsernameText={this.updateUsernameText}
                     updatePasswordText={this.updatePasswordText}
                 />
-                {/* <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>{""}</Text>
-                </View> */}
+                {this.props.currentUser.errLogin &&
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{this.props.currentUser.errLogin}</Text>
+                    </View>
+                }
                 <View style={styles.buttonContainer}>
                     <Animated.View style={{ width: changeWidth }}>
                         <TouchableOpacity style={styles.button}
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     buttonContainer: {
-        flex: 5,
+        flex: 4,
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
@@ -169,7 +173,6 @@ const styles = StyleSheet.create({
     },
     errorContainer: {
         flex: 1,
-        top: -30,
         width: DEVICE_WIDTH,
         flexDirection: 'row',
         alignItems: 'center',
@@ -181,4 +184,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+const mapStateToProps = (state) => ({
+    currentUser: state.currentUser
+});
+
+export default connect(mapStateToProps, { fetchCheckLogin })(LoginScreen);
