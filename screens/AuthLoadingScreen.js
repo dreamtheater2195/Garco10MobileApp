@@ -10,22 +10,34 @@ import { connect } from 'react-redux';
 
 class AuthLoadingScreen extends React.Component {
 
-    componentWillMount() {
+    state = {
+        isLoggedIn: null
+    }
+
+    componentDidMount() {
         this.props.fetchGetUserLogin();
     }
 
     componentWillReceiveProps(nextProps) {
-        const isLoggedIn = nextProps.currentUser.isLoggedIn;
-        this.props.navigation.navigate(isLoggedIn ? 'App' : 'Auth');
+        const { user } = nextProps.auth;
+        console.log(user);
+        this.props.navigation.navigate(user ? 'App' : 'Auth');
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <ActivityIndicator />
-                <StatusBar barStyle="default" />
-            </View>
-        );
+        if (this.state.isLoggedIn === null) {
+            console.log('render indicator');
+            return (
+                <View style={styles.container}>
+                    <ActivityIndicator size="large" />
+                    <StatusBar barStyle="default" />
+                </View>
+            );
+        } else {
+            return (
+                <View />
+            )
+        }
     }
 }
 
@@ -37,8 +49,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({ currentUser }) => ({
-    currentUser
+const mapStateToProps = ({ auth }) => ({
+    auth
 });
 
 export default connect(mapStateToProps, { fetchGetUserLogin })(AuthLoadingScreen);

@@ -20,7 +20,11 @@ class LoginForm extends Component {
         secureTextEntry: true
     }
     toggleShowPassword = () => {
-        this.setState({ secureTextEntry: !secureTextEntry });
+        this.setState((prevState) => {
+            return {
+                secureTextEntry: !prevState.secureTextEntry
+            }
+        });
     }
     render() {
         return (

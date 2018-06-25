@@ -1,11 +1,10 @@
 export default {
-    currentUser: {
+    auth: {
         userName: 'hoadl',
         passWord: '123456',
-        isLoggedIn: false,
-        data: [],
-        detailLoSx: [],
-        errLogin: ''
+        fetching: false,
+        error: '',
+        user: null
     },
     garco10: {
         lohang: [],

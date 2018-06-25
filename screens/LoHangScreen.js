@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 class LoHangScreen extends Component {
+
     render() {
         return (
             <View style={styles.container}>

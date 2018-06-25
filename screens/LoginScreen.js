@@ -14,7 +14,7 @@ import wallpaper from '../images/wallpaper.png';
 import Logo from '../components/login/Logo';
 import LoginForm from '../components/login/LoginForm';
 import spinner from '../images/loading.gif';
-import { fetchCheckLogin } from '../actions';
+import { fetchCheckLogin, updatePasswordInputText, updateUsernameInputText } from '../actions';
 import { connect } from 'react-redux';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -23,38 +23,25 @@ const MARGIN = 40;
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            username: '',
-            password: '',
-            loading: false
-        }
         this.buttonAnimated = new Animated.Value(0);
         this.growAnimated = new Animated.Value(0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.currentUser.isLoggedIn) {
+        if (nextProps.auth.user) {
             this.onGrow();
             this.props.navigation.navigate('App');
         }
         else {
-            this.setState({ loading: false });
             this.buttonAnimated.setValue(0);
             this.growAnimated.setValue(0);
         }
     }
 
-    updateUsernameText = (username) => {
-        this.setState({ username });
-    }
-    updatePasswordText = (password) => {
-        this.setState({ password });
-    }
-
     onButtonPress = () => {
-        if (this.state.loading) return;
+        const { fetching, userName, passWord } = this.props.auth;
+        if (fetching) return;
 
-        this.setState({ loading: true });
         Animated.timing(
             this.buttonAnimated,
             {
@@ -63,7 +50,7 @@ class LoginScreen extends Component {
                 easing: Easing.linear
             }
         ).start();
-        this.props.fetchCheckLogin(this.state.username, this.state.password);
+        this.props.fetchCheckLogin(userName, passWord);
     }
 
     onGrow = () => {
@@ -87,19 +74,20 @@ class LoginScreen extends Component {
             outputRange: [1, MARGIN]
         });
 
+        const { userName, passWord, error, fetching } = this.props.auth;
         return (
             <ImageBackground style={{ flex: 1 }} source={wallpaper}>
 
                 <Logo />
                 <LoginForm
-                    usernameText={this.state.username}
-                    passwordText={this.state.password}
-                    updateUsernameText={this.updateUsernameText}
-                    updatePasswordText={this.updatePasswordText}
+                    usernameText={userName}
+                    passwordText={passWord}
+                    updateUsernameText={this.props.updateUsernameInputText}
+                    updatePasswordText={this.props.updatePasswordInputText}
                 />
-                {this.props.currentUser.errLogin &&
+                {error &&
                     <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{this.props.currentUser.errLogin}</Text>
+                        <Text style={styles.errorText}>{error}</Text>
                     </View>
                 }
                 <View style={styles.buttonContainer}>
@@ -107,7 +95,7 @@ class LoginScreen extends Component {
                         <TouchableOpacity style={styles.button}
                             onPress={this.onButtonPress}
                             activeOpacity={1} >
-                            {this.state.loading ?
+                            {fetching ?
                                 <Image source={spinner} style={styles.image} />
                                 :
                                 <Text style={styles.text}>Login</Text>
@@ -185,7 +173,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    currentUser: state.currentUser
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { fetchCheckLogin })(LoginScreen);
+export default connect(
+    mapStateToProps,
+    {
+        fetchCheckLogin,
+        updatePasswordInputText,
+        updateUsernameInputText
+    }
+)(LoginScreen);
