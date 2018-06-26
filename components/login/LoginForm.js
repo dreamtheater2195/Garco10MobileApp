@@ -29,7 +29,7 @@ class LoginForm extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <KeyboardAvoidingView behavior='padding'>
+                <KeyboardAvoidingView behavior="height">
                     <Input source={usernameImg}
                         placeholder='Username'
                         autoCapitalize={'none'}

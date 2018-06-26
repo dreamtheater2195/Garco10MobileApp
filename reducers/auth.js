@@ -30,6 +30,8 @@ const currentUser = (state = initialState.auth, action) => {
                 error: action.payload,
                 fetching: false
             }
+        case types.LOG_OUT:
+            return initialState.auth;
         default:
             return state;
     }

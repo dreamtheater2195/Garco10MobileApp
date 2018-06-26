@@ -2,7 +2,7 @@ import * as types from './types';
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:1338/api/mobile';
+const BASE_URL = 'http://192.168.0.110:1338/api/mobile';
 
 export const updateUsernameInputText = (text) => {
     return {
@@ -71,4 +71,9 @@ export const fetchGetUserLogin = () => async dispatch => {
     else {
         dispatch(checkLoginSuccess(null));
     }
+}
+
+export const logOut = () => async dispatch => {
+    await AsyncStorage.removeItem('UID1234');
+    dispatch({ type: types.LOG_OUT });
 }
