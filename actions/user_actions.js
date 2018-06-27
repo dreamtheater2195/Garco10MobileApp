@@ -2,7 +2,7 @@ import * as types from './types';
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.0.110:1338/api/mobile';
+const BASE_URL = 'http://192.168.68.185:1338/api/mobile';
 
 export const updateUsernameInputText = (text) => {
     return {
