@@ -14,7 +14,7 @@ class AuthLoadingScreen extends React.Component {
         isLoggedIn: null
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.fetchGetUserLogin();
     }
 
@@ -26,7 +26,6 @@ class AuthLoadingScreen extends React.Component {
 
     render() {
         if (this.state.isLoggedIn === null) {
-            console.log('render indicator');
             return (
                 <View style={styles.container}>
                     <ActivityIndicator size="large" />

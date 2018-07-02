@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
+import garco10 from './garco10';
 export default combineReducers({
-    garco10: () => { return {} },
+    garco10,
     garco10Ex: () => { return {} },
     auth
 })

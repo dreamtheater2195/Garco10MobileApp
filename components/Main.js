@@ -1,11 +1,12 @@
 import React from 'react';
 import LoginScreen from '../screens/LoginScreen';
+import LoHangUpdateScreen from '../screens/LoHangUpdateScreen';
 import LoHangScreen from '../screens/LoHangScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
 const AppStack = createStackNavigator({
-    App: LoHangScreen
+    LoHang: LoHangScreen
 });
 
 const Navigator = createSwitchNavigator({

@@ -1,6 +1,6 @@
 import * as types from '../actions/types';
 import initialState from '../store/initialState';
-const currentUser = (state = initialState.auth, action) => {
+const auth = (state = initialState.auth, action) => {
     switch (action.type) {
         case types.UPDATE_USERNAME_INPUT_TEXT:
             return {
@@ -37,4 +37,4 @@ const currentUser = (state = initialState.auth, action) => {
     }
 }
 
-export default currentUser;
+export default auth;

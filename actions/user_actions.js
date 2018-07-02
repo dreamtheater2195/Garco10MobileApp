@@ -1,8 +1,7 @@
 import * as types from './types';
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
-
-const BASE_URL = 'http://192.168.68.185:1338/api/mobile';
+import { API_BASE_URL } from '../constants/api';
 
 export const updateUsernameInputText = (text) => {
     return {
@@ -41,7 +40,7 @@ const checkLoginSuccess = (user) => {
 export const fetchCheckLogin = (username, password) => async dispatch => {
     dispatch(checkLogin());
     try {
-        const url = `${BASE_URL}/checkLogin?userName=${username}&passWord=${password}`;
+        const url = `${API_BASE_URL}/checkLogin?userName=${username}&passWord=${password}`;
         const { data } = await axios.get(url);
         if (data.results && data.results.length > 0) {
             var user = {
