@@ -19,6 +19,7 @@ const Navigator = createSwitchNavigator({
     });
 
 class Main extends React.Component {
+
     render() {
         return (
             <Navigator />

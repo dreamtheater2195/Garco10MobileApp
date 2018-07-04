@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     ImageBackground,
+    Dimensions,
     View,
     Text,
-    Dimensions
+    Image
 } from 'react-native';
-import wallpaper from '../images/wallpaper.png';
-import Logo from '../components/login/Logo';
-import LoginForm from '../components/login/LoginForm';
-import spinner from '../images/loading.gif';
+import wallpaper from '../assets/images/bg_screen1.jpg';
+import LoginForm from '../components/LoginForm';
 import { fetchCheckLogin, updatePasswordInputText, updateUsernameInputText } from '../actions';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const MARGIN = 40;
-
+import logo from '../assets/images/logo-white.png';
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
@@ -38,82 +36,56 @@ class LoginScreen extends Component {
 
         const { userName, passWord, error, fetching } = this.props.auth;
         return (
-            <ImageBackground style={styles.container} source={wallpaper}>
-
-                <Logo />
-                <LoginForm
-                    usernameText={userName}
-                    passwordText={passWord}
-                    updateUsernameText={this.props.updateUsernameInputText}
-                    updatePasswordText={this.props.updatePasswordInputText}
-                />
-                {!!error &&
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{error}</Text>
+            <View style={styles.container}>
+                <ImageBackground style={styles.bgImage} source={wallpaper}>
+                    <View style={styles.loginView}>
+                        <View style={styles.loginTitle}>
+                            <Image source={logo} />
+                        </View>
+                        <LoginForm
+                            usernameText={userName}
+                            passwordText={passWord}
+                            updateUsernameText={this.props.updateUsernameInputText}
+                            updatePasswordText={this.props.updatePasswordInputText}
+                            error={error}
+                            fetching={fetching}
+                            onButtonPress={this.onButtonPress}
+                        />
                     </View>
-                }
-                <View style={styles.buttonContainer}>
-                    <Button
-                        title="Log in"
-                        loading={fetching}
-                        loadingProps={{ size: "large", color: "#fff" }}
-                        buttonStyle={styles.button}
-                        onPress={this.onButtonPress}
-                    />
-                </View>
-            </ImageBackground>
+                </ImageBackground>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    bgImage: {
+        flex: 1,
+        top: 0,
+        left: 0,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loginView: {
+        backgroundColor: 'transparent',
+        width: SCREEN_WIDTH / 2,
+        height: SCREEN_HEIGHT / 2,
+    },
+    loginTitle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    btnSubmit: {
-        justifyContent: 'center',
-        padding: 10,
-        flexDirection: 'row',
-    },
-    input: {
-        height: 40,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderRadius: 5,
-    },
-    buttonContainer: {
-        flex: 4,
-        alignSelf: 'stretch',
-        justifyContent: 'flex-start',
-        marginLeft: MARGIN / 2,
-        marginRight: MARGIN / 2
-    },
-    button: {
-        backgroundColor: '#F035E0',
-        height: MARGIN,
-        borderRadius: 20
-    },
-    text: {
+    loginTitleText: {
         color: 'white',
-        backgroundColor: 'transparent',
-    },
-    image: {
-        width: 24,
-        height: 24,
-    },
-    errorContainer: {
-        flex: 1,
-        width: DEVICE_WIDTH,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-    },
-    errorText: {
-        color: 'red',
-        backgroundColor: 'transparent',
-    },
+        fontSize: 30,
+        fontFamily: 'roboto-bold'
+    }
 });
 
 const mapStateToProps = (state) => ({

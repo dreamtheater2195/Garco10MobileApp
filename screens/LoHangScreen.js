@@ -155,30 +155,50 @@ class LoHangScreen extends Component {
                             {moment(item.Ngay_KetThuc).format('DD/MM/YYYY')}
                         </Text>
                     </View>
-                    <Grid style={{ marginTop: 5, marginBottom: 10, borderWidth: 1 }}>
+                    <Grid style={{ marginTop: 5, marginBottom: 10 }}>
                         <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}><Text style={gridHeaderText}>Ra chuyền hôm nay</Text></Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}><Text style={gridText}>{item.RaChuyen_NgayHienTai}</Text></Row>
+                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
+                                <Text style={gridHeaderText}>Ra chuyền hôm nay</Text>
+                            </Row>
+                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
+                                <Text style={gridText}>{item.RaChuyen_NgayHienTai}</Text>
+                            </Row>
                         </Col>
 
                         <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}><Text style={gridHeaderText}>SL của lô</Text></Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}><Text style={gridText}>{item.SoLuongCuaLo}</Text></Row>
+                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
+                                <Text style={gridHeaderText}>SL của lô</Text>
+                            </Row>
+                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
+                                <Text style={gridText}>{item.SoLuongCuaLo}</Text>
+                            </Row>
                         </Col>
 
                         <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}><Text style={gridHeaderText}>SL kế hoạch</Text></Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}><Text style={gridText}>{item.SoLuong_KH}</Text></Row>
+                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
+                                <Text style={gridHeaderText}>SL kế hoạch</Text>
+                            </Row>
+                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
+                                <Text style={gridText}>{item.SoLuong_KH}</Text>
+                            </Row>
                         </Col>
 
                         <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}><Text style={gridHeaderText}>SL ra chuyền</Text></Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}><Text style={gridText}>{item.SoLuong_RaChuyen}</Text></Row>
+                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
+                                <Text style={gridHeaderText}>SL ra chuyền</Text>
+                            </Row>
+                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
+                                <Text style={gridText}>{item.SoLuong_RaChuyen}</Text>
+                            </Row>
                         </Col>
 
                         <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1 }}><Text style={gridHeaderText}>SL vào chuyền</Text></Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}><Text style={gridText}>{item.SoLuong_VaoChuyen}</Text></Row>
+                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1 }}>
+                                <Text style={gridHeaderText}>SL vào chuyền</Text>
+                            </Row>
+                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={gridText}>{item.SoLuong_VaoChuyen}</Text>
+                            </Row>
                         </Col>
                     </Grid>
                     <Button
