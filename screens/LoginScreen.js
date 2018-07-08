@@ -7,13 +7,11 @@ import {
     Text,
     Image
 } from 'react-native';
-import wallpaper from '../assets/images/bg_screen1.jpg';
 import LoginForm from '../components/LoginForm';
 import { fetchCheckLogin, updatePasswordInputText, updateUsernameInputText } from '../actions';
 import { connect } from 'react-redux';
-import logo from '../assets/images/logo-white.png';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+import { Images, Metrics, Fonts } from '../themes';
+
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
@@ -37,10 +35,10 @@ class LoginScreen extends Component {
         const { userName, passWord, error, fetching } = this.props.auth;
         return (
             <View style={styles.container}>
-                <ImageBackground style={styles.bgImage} source={wallpaper}>
+                <ImageBackground style={styles.bgImage} source={Images.background}>
                     <View style={styles.loginView}>
                         <View style={styles.loginTitle}>
-                            <Image source={logo} />
+                            <Image source={Images.whiteLogo} />
                         </View>
                         <LoginForm
                             usernameText={userName}
@@ -66,15 +64,15 @@ const styles = StyleSheet.create({
         flex: 1,
         top: 0,
         left: 0,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Metrics.screenWidth,
+        height: Metrics.screenHeight,
         justifyContent: 'center',
         alignItems: 'center'
     },
     loginView: {
         backgroundColor: 'transparent',
-        width: SCREEN_WIDTH / 2,
-        height: SCREEN_HEIGHT / 2,
+        width: Metrics.screenWidth / 2,
+        height: Metrics.screenHeight / 2,
     },
     loginTitle: {
         flex: 1,
@@ -83,8 +81,7 @@ const styles = StyleSheet.create({
     },
     loginTitleText: {
         color: 'white',
-        fontSize: 30,
-        fontFamily: 'roboto-bold'
+        ...Fonts.style.h4
     }
 });
 

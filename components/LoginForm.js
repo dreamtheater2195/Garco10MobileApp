@@ -6,8 +6,7 @@ import {
 } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import { Metrics, Colors, Fonts } from '../themes';
 class LoginForm extends Component {
 
     render() {
@@ -18,14 +17,14 @@ class LoginForm extends Component {
                         leftIcon={
                             <Icon
                                 name='user-o'
-                                color='rgba(171, 189, 219, 1)'
+                                color={Colors.aliceBlue}
                                 size={25}
                             />
                         }
                         containerStyle={{ marginVertical: 10 }}
                         onChangeText={this.props.updateUsernameText}
                         value={this.props.usernameText}
-                        inputStyle={{ marginLeft: 10, color: 'white' }}
+                        inputStyle={{ marginLeft: 10, color: Colors.snow }}
                         keyboardAppearance="light"
                         placeholder="Username"
                         autoFocus={false}
@@ -43,14 +42,14 @@ class LoginForm extends Component {
                         leftIcon={
                             <Icon
                                 name='lock'
-                                color='rgba(171, 189, 219, 1)'
+                                color={Colors.aliceBlue}
                                 size={25}
                             />
                         }
                         containerStyle={{ marginVertical: 10 }}
                         onChangeText={this.props.updatePasswordText}
                         value={this.props.passwordText}
-                        inputStyle={{ marginLeft: 10, color: 'white' }}
+                        inputStyle={{ marginLeft: 10, color: Colors.snow }}
                         secureTextEntry={true}
                         keyboardAppearance="light"
                         placeholder="Password"
@@ -73,9 +72,16 @@ class LoginForm extends Component {
                     loading={!!this.props.fetching}
                     loadingProps={{ size: 'small', color: 'white' }}
                     disabled={false}
-                    buttonStyle={{ height: 50, width: SCREEN_WIDTH / 2, backgroundColor: 'transparent', borderWidth: 2, borderColor: 'white', borderRadius: 30 }}
+                    buttonStyle={{
+                        height: 50,
+                        width: Metrics.screenWidth / 2,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderColor: 'white',
+                        borderRadius: 30
+                    }}
                     containerStyle={{ marginVertical: 10 }}
-                    titleStyle={{ fontFamily: 'roboto-medium', color: 'white', fontWeight: '700' }}
+                    titleStyle={{ fontFamily: Fonts.type.medium, color: 'white', fontWeight: '700' }}
                 />
             </React.Fragment>
         );

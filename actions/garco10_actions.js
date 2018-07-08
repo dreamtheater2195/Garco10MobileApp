@@ -18,18 +18,12 @@ export const fetchDataLoHang = (ID_LoSanXuat, ID_DonVi) => async dispatch => {
         const url = `${API_BASE_URL}/loSx/findAll?idLoSx=${ID_LoSanXuat}&idDonVi=${ID_DonVi}`;
         const { data } = await axios.get(url);
         if (data.results && data.results.length > 0) {
-            const dataDisplay = data.results.map(item => {
-                return `PO: ${item.PO_No} | Style: ${item.StyleName} | Mã lô SX: ${item.Ma_LoSanXuat}`;
-            })
-
             dispatch(fetchLoHangSuccess({
-                lohang: data.results,
-                dataDisplay
+                lohang: data.results
             }));
         } else {
             dispatch(fetchLoHangSuccess({
-                lohang: [],
-                dataDisplay: []
+                lohang: []
             }));
         }
     }
@@ -37,3 +31,8 @@ export const fetchDataLoHang = (ID_LoSanXuat, ID_DonVi) => async dispatch => {
         dispatch(fetchLoHangFailure('Không thể lấy danh sách lô sản xuất'));
     }
 }
+
+export const setDataLoHang = (lohang) => ({
+    type: types.SET_DATA_LOHANG,
+    payload: lohang
+});

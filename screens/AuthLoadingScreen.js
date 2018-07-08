@@ -18,9 +18,6 @@ class AuthLoadingScreen extends React.Component {
 
     async componentDidMount() {
         await Font.loadAsync({
-            'raleway-light': require('../assets/fonts/Raleway-Light.ttf'),
-            'raleway-regular': require('../assets/fonts/Raleway-Regular.ttf'),
-            'raleway-medium': require('../assets/fonts/Raleway-Medium.ttf'),
             'roboto-bold': require('../assets/fonts/Roboto-Bold.ttf'),
             'roboto-light': require('../assets/fonts/Roboto-Light.ttf'),
             'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),

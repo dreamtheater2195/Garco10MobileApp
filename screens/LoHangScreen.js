@@ -6,7 +6,9 @@ import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Col, Row, Grid } from "react-native-easy-grid";
+import LoHangInfo from '../components/LoHangInfo';
+import { Colors, Fonts, Metrics } from '../themes';
+
 const styles = StyleSheet.create({
     defaultRowContainer: {
         flex: 1,
@@ -28,44 +30,9 @@ const styles = StyleSheet.create({
     overlayButton: {
         marginBottom: 10
     },
-    headerTitle: {
-        fontFamily: 'roboto-medium',
-        fontSize: 18,
-        color: '#fff',
-        marginLeft: 10
-    },
-    gridHeaderText: {
-        fontFamily: 'roboto-medium',
-        textAlign: 'center'
-    },
-    gridText: {
-        fontFamily: 'roboto-regular',
-        textAlign: 'center'
-    },
-    cardRowContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        borderColor: '#ccc',
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-    cardRowLabel: {
-        fontFamily: 'roboto-medium',
-    },
-    cardDateText: {
-        fontFamily: 'roboto-light',
-        fontStyle: 'italic',
-        color: '#434343'
-    },
-    cardRowText: {
-        fontFamily: 'roboto-regular'
-    }
-});
-const { defaultRowContainer, defaultColumnContainer, overlayButton, overlayButtonContainer, headerTitle, gridHeaderText, gridText, cardRowContainer, cardRowLabel, cardDateText, cardRowText } = styles;
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+});
+const { defaultRowContainer, defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
 
 class LoHangScreen extends Component {
     constructor(props) {
@@ -76,19 +43,16 @@ class LoHangScreen extends Component {
     }
     static navigationOptions = ({ navigation }) => {
         return {
-            headerTitle: <Text style={headerTitle}>Lô sản xuất</Text>,
+            headerTitle: 'Lô sản xuất',
             headerRight: (
                 <Icon
                     reverse
                     name='ios-log-out'
                     type='ionicon'
-                    color='#5D1049'
+                    color={Colors.darkPink}
                     size={28}
                     onPress={navigation.getParam('logOutUser')} />
-            ),
-            headerStyle: {
-                backgroundColor: '#5D1049'
-            }
+            )
         }
     }
 
@@ -121,93 +85,15 @@ class LoHangScreen extends Component {
         const { garco10 } = this.props;
         return garco10.lohang.map((item, index) => {
             return (
-                <Card title={item.Ma_LoSanXuat} key={index}>
-
-                    <View style={cardRowContainer}>
-                        <Text style={cardRowLabel}>Khách hàng: </Text>
-                        <Text style={[cardRowText, { color: '#E30425' }]}>{item.Ten_KhachHang}</Text>
-                    </View>
-
-                    <View style={cardRowContainer}>
-                        <Text style={cardRowLabel}>Style: </Text>
-                        <Text style={cardRowText}>{item.StyleName}</Text>
-                    </View>
-
-                    <View style={cardRowContainer}>
-                        <Text style={cardRowLabel}>Số PO: </Text>
-                        <Text style={cardRowText}>{item.PO_No}</Text>
-                    </View>
-
-                    <View style={cardRowContainer}>
-                        <Text style={cardRowLabel}>Chuyền may: </Text>
-                        <Text style={cardRowText}>{item.Ten_ChuyenMay}</Text>
-                    </View>
-
-                    <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row', paddingTop: 5 }}>
-                        <Text style={cardDateText}>
-                            Ngày bắt đầu:
-                            {' '}
-                            {moment(item.Ngay_BatDau).format('DD/MM/YYYY')}
-                        </Text>
-                        <Text style={cardDateText}>
-                            Ngày kết thúc:
-                            {' '}
-                            {moment(item.Ngay_KetThuc).format('DD/MM/YYYY')}
-                        </Text>
-                    </View>
-                    <Grid style={{ marginTop: 5, marginBottom: 10 }}>
-                        <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                                <Text style={gridHeaderText}>Ra chuyền hôm nay</Text>
-                            </Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                                <Text style={gridText}>{item.RaChuyen_NgayHienTai}</Text>
-                            </Row>
-                        </Col>
-
-                        <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                                <Text style={gridHeaderText}>SL của lô</Text>
-                            </Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                                <Text style={gridText}>{item.SoLuongCuaLo}</Text>
-                            </Row>
-                        </Col>
-
-                        <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                                <Text style={gridHeaderText}>SL kế hoạch</Text>
-                            </Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                                <Text style={gridText}>{item.SoLuong_KH}</Text>
-                            </Row>
-                        </Col>
-
-                        <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                                <Text style={gridHeaderText}>SL ra chuyền</Text>
-                            </Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                                <Text style={gridText}>{item.SoLuong_RaChuyen}</Text>
-                            </Row>
-                        </Col>
-
-                        <Col>
-                            <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1 }}>
-                                <Text style={gridHeaderText}>SL vào chuyền</Text>
-                            </Row>
-                            <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={gridText}>{item.SoLuong_VaoChuyen}</Text>
-                            </Row>
-                        </Col>
-                    </Grid>
+                <LoHangInfo lohang={item} key={index}>
                     <Button
-                        icon={<Icon name="ios-create-outline" type="ionicon" color="#fff" />}
+                        icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
                         title="Cập nhật ra chuyền"
-                        buttonStyle={{ backgroundColor: '#720D5D' }}
-                        titleStyle={{ fontFamily: 'roboto-medium', color: 'white', fontWeight: '400' }}
+                        buttonStyle={{ backgroundColor: Colors.darkPink }}
+                        titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
+                        onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
                     />
-                </Card>
+                </LoHangInfo>
             );
         });
     }
@@ -219,7 +105,7 @@ class LoHangScreen extends Component {
                     <Spinner
                         visible={this.props.garco10.fetching}
                         textContent={"Loading..."}
-                        textStyle={{ fontFamily: 'roboto-medium', color: '#253145' }}
+                        textStyle={{ fontFamily: Fonts.type.medium, color: Colors.drawer }}
                         animation="fade"
                     />
                 </View>
@@ -229,7 +115,7 @@ class LoHangScreen extends Component {
         if (this.props.garco10.error) {
             return (
                 <View style={defaultColumnContainer}>
-                    <Text style={{ fontFamily: 'roboto-medium', fontSize: 18 }}>
+                    <Text style={Fonts.style.subTitle1}>
                         {this.props.garco10.error}
                     </Text>
                 </View>
@@ -243,27 +129,27 @@ class LoHangScreen extends Component {
                         isVisible={this.state.logingOut}
                         onBackdropPress={this.logOutCancel}
                         overlayStyle={{
-                            height: SCREEN_HEIGHT / 3
+                            height: Metrics.screenHeight / 3
                         }}
                     >
                         <View style={[defaultColumnContainer, { flex: 2 }]}>
                             <Text style={{ fontFamily: 'roboto-medium' }}>
                                 Bạn có chắc muốn đăng xuất?
-                        </Text>
+                            </Text>
                         </View>
 
                         <View style={[overlayButtonContainer]}>
                             <Button
                                 title="Có"
                                 onPress={this.logOutConfirm}
-                                buttonStyle={[overlayButton, { backgroundColor: '#720D5D' }]}
-                                titleStyle={{ fontFamily: 'roboto-medium', color: 'white', marginHorizontal: 20 }}
+                                buttonStyle={[overlayButton, { backgroundColor: Colors.darkPink }]}
+                                titleStyle={{ fontFamily: Fonts.type.medium, color: 'white', marginHorizontal: 20 }}
                             />
                             <Button
                                 title="Không"
                                 onPress={this.logOutCancel}
-                                buttonStyle={[overlayButton, { backgroundColor: 'white', borderColor: '#720D5D', borderWidth: 1 }]}
-                                titleStyle={{ fontFamily: 'roboto-medium', color: '#720D5D' }}
+                                buttonStyle={[overlayButton, { backgroundColor: 'white', borderColor: Colors.darkPink, borderWidth: 1 }]}
+                                titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.darkPink }}
                             />
                         </View>
                     </Overlay>
