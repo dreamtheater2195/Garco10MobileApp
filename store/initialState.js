@@ -7,10 +7,8 @@ export default {
         user: null
     },
     garco10: {
-        lohang: [],
-        dataDisplay: []
-    },
-    garco10Ex: {
-        selectedPickerValue: { infoLoSx: {}, loSxId: 0, maloSx: '', pickerValue: '', isShowPicker: false, selectedValue: [] },
+        fetching: false,
+        error: '',
+        lohang: []
     }
 }

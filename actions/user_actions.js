@@ -52,7 +52,6 @@ export const fetchCheckLogin = (username, password) => async dispatch => {
                 Ten_DonVi: data.results[0].Ten_DonVi,
                 data: data.results
             }
-            await AsyncStorage.setItem('UID1234', JSON.stringify(user));
             dispatch(checkLoginSuccess(user));
         } else {
             dispatch(checkLoginFailure('Wrong username or password.'));
