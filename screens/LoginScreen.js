@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         width: Metrics.screenWidth / 2,
         height: Metrics.screenHeight / 2,
+        marginBottom: Metrics.doubleBaseMargin
     },
     loginTitle: {
         flex: 1,

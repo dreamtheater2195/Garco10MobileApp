@@ -22,7 +22,8 @@ const garco10 = (state = initialState.garco10, action) => {
                 error: action.payload
             }
         case types.UPDATE_SOLUONG_RACHUYEN:
-            const item = state.lohang.filter((item) => item.ID_LoSanXuat == action.payload.loSxId)[0];
+            const index = state.lohang.findIndex((item) => item.ID_LoSanXuat == action.payload.loSxId);
+            const item = state.lohang[index];
             const updatedItem = {
                 ...item,
                 SoLuong_RaChuyen: action.payload.SoLuong_RaChuyen,

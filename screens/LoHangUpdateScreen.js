@@ -70,7 +70,7 @@ class LoHangUpdateScreen extends Component {
             loSxId: lohang.ID_LoSanXuat,
             mauSpId: 0,
             coSpId: 0,
-            soluongRaChuyen: soluongRaChuyen,
+            soluongRaChuyen: soLuongRaChuyen,
             nguoiNhapId: currentUser.ID_NhanSu,
             createDate: new Date()
         };
