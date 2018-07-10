@@ -28,7 +28,7 @@ export const fetchDataLoHang = (ID_LoSanXuat, ID_DonVi) => async dispatch => {
         }
     }
     catch (err) {
-        dispatch(fetchLoHangFailure('Không thể lấy danh sách lô sản xuất'));
+        dispatch(fetchLoHangFailure('Không thể lấy danh sách lô sản xuất mới nhất'));
     }
 }
 

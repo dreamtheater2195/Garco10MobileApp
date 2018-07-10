@@ -61,7 +61,7 @@ const LoHangInfo = ({ lohang, children }) => {
         <Card title={lohang.Ma_LoSanXuat} wrapperStyle={{ flex: 1 }} containerStyle={{ flex: 1, marginBottom: 10 }}>
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Khách hàng: </Text>
-                <Text style={[cardRowText, { color: Colors.ember }]}>{lohang.Ten_KhachHang}</Text>
+                <Text style={[cardRowText, { color: Colors.error }]}>{lohang.Ten_KhachHang}</Text>
             </View>
 
             <View style={cardRowContainer}>

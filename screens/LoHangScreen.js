@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logOut, fetchDataLoHang, changeConnectionState } from '../actions';
-import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -70,20 +70,11 @@ class LoHangScreen extends Component {
     handleConnectionChange = (isConnected) => {
         this.props.changeConnectionState(isConnected);
         if (isConnected) {
-            //remove action queue
-
-            //fetch latest data
-            this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
+            this.fetchData();
         }
         if (!isConnected) {
             ToastAndroid.showWithGravity(
-                'Waiting for network connection',
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM,
-            );
-        } else {
-            ToastAndroid.showWithGravity(
-                'Connected to network',
+                'Không có kết nối mạng',
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
             );
@@ -94,6 +85,20 @@ class LoHangScreen extends Component {
         if (!nextProps.auth.user) {
             this.props.navigation.navigate('Auth');
         }
+        if (nextProps.garco10.error && nextProps.garco10.error !== this.props.garco10.error) {
+            ToastAndroid.showWithGravity(
+                nextProps.garco10.error,
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
+        }
+    }
+
+    fetchData = () => {
+        //remove action queue
+
+        //fetch latest data
+        this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
     }
 
     logOutUser = () => {
@@ -110,19 +115,21 @@ class LoHangScreen extends Component {
 
     renderLoHang = () => {
         const { garco10 } = this.props;
-        return garco10.lohang.map((item, index) => {
-            return (
-                <LoHangInfo lohang={item} key={index}>
-                    <Button
-                        icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
-                        title="Cập nhật ra chuyền"
-                        buttonStyle={{ backgroundColor: Colors.darkPink }}
-                        titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
-                        onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
-                    />
-                </LoHangInfo>
-            );
-        });
+        if (garco10.lohang.length > 0) {
+            return garco10.lohang.map((item, index) => {
+                return (
+                    <LoHangInfo lohang={item} key={index}>
+                        <Button
+                            icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
+                            title="Cập nhật ra chuyền"
+                            buttonStyle={{ backgroundColor: Colors.darkPink }}
+                            titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
+                            onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
+                        />
+                    </LoHangInfo>
+                );
+            });
+        }
     }
     render() {
         const dateString = moment().format('DD/MM/YYYY');
@@ -135,16 +142,6 @@ class LoHangScreen extends Component {
                         textStyle={{ fontFamily: Fonts.type.medium, color: Colors.drawer }}
                         animation="fade"
                     />
-                </View>
-            )
-        }
-
-        if (this.props.garco10.error) {
-            return (
-                <View style={defaultColumnContainer}>
-                    <Text style={Fonts.style.subTitle1}>
-                        {this.props.garco10.error}
-                    </Text>
                 </View>
             )
         }
@@ -183,8 +180,42 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
+        if (this.props.garco10.lohang.length === 0) {
+            return (
+                <ScrollView
+                    contentContainerStyle={defaultColumnContainer}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.props.garco10.fetching}
+                            onRefresh={this.fetchData}
+                            colors={[Colors.ember]}
+                            tintColor="white"
+                            title="loading..."
+                            titleColor="white"
+                            progressBackgroundColor="white"
+                        />
+                    }
+                >
+                    <Text style={Fonts.style.body1}>
+                        Không có lô sản xuất
+                    </Text>
+                </ScrollView>
+            );
+        }
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.props.garco10.fetching}
+                        onRefresh={this.fetchData}
+                        colors={[Colors.ember]}
+                        tintColor="white"
+                        title="loading..."
+                        titleColor="white"
+                        progressBackgroundColor="white"
+                    />
+                }
+            >
                 {this.renderLoHang()}
             </ScrollView>
         )
