@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logOut, fetchDataLoHang, changeConnectionState } from '../actions';
+import { logOut, fetchDataLoHang, changeConnectionState, updateSLRaChuyen } from '../actions';
 import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
@@ -95,10 +95,8 @@ class LoHangScreen extends Component {
     }
 
     fetchData = () => {
-        //remove action queue
-
-        //fetch latest data
-        this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
+        //sync data and load lohang
+        this.props.updateSLRaChuyen(null, () => this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi));
     }
 
     logOutUser = () => {
@@ -225,14 +223,15 @@ class LoHangScreen extends Component {
 const mapStateToProps = (state) => ({
     garco10: state.garco10,
     auth: state.auth,
-    isConnected: state.network.isConnected
+    network: state.network
 });
 export default connect(
     mapStateToProps,
     {
         logOut,
         fetchDataLoHang,
-        changeConnectionState
+        changeConnectionState,
+        updateSLRaChuyen
     }
 )(LoHangScreen);
 

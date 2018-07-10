@@ -6,7 +6,7 @@ const REDUX_PERSIST = {
     storeConfig: {
         key: 'root',
         storage: AsyncStorage,
-        blacklist: ['network']
+        blacklist: []
     }
 }
 

@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'http://192.168.68.183:1338/api/mobile';
+export const API_BASE_URL = 'http://192.168.0.183:1338/api/mobile';

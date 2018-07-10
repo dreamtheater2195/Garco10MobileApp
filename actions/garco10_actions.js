@@ -1,7 +1,6 @@
 import * as types from './types';
 import { API_BASE_URL } from '../constants/api';
 import axios from 'axios';
-
 const fetchLoHangSuccess = (data) => ({
     type: types.FETCH_LOHANG_SUCCESS,
     payload: data
@@ -32,38 +31,61 @@ export const fetchDataLoHang = (ID_LoSanXuat, ID_DonVi) => async dispatch => {
     }
 }
 
-export const updateSLRaChuyen = (data) => async dispatch => {
-    dispatch({
-        type: types.UPDATE_SOLUONG_RACHUYEN,
-        payload: data
-    });
-    const currentRaChuyen = {
-        userName: data.userName,
-        loSxId: data.loSxId,
-        mauSpId: data.mauSpId,
-        coSpId: data.coSpId,
-        soluongRaChuyen: data.soluongRaChuyen,
-        nguoiNhapId: data.nguoiNhapId,
-        createDate: data.createDate
-    };
-    // try {
-    //     const url = `${API_BASE_URL}/loSx/updateSlRaChuyenTheoMang`;
-    //     const requestConfig = {
-    //         method: 'post',
-    //         url: url,
-    //         timeout: 3000,
-    //         data: {
-    //             currentRaChuyen: currentRaChuyen
-    //         }
-    //     };
-    //     const { data } = await axios(requestConfig);
-    //     if (data.results && data.results.returnValue == 1) {
-    //         dispatch({ type: types.UPDATE_SOLUONG_RACHUYEN_SUCCESS });
-    //     } else {
-    //         //add to action queue
-    //         dispatch({ type: types.ADD_ACTION_TO_QUEUE, payload: currentRaChuyen });
-    //     }
-    // } catch (err) {
-    //     dispatch({ type: types.ADD_ACTION_TO_QUEUE, payload: currentRaChuyen });
-    // }
+export const updateSLRaChuyen = (payload, callback) => async (dispatch, getState) => {
+
+    const { isConnected, actionQueue } = getState().network;
+
+    console.log('Network', isConnected, actionQueue);
+
+    let currentRaChuyen = null;
+    let addtoQueueAction = null;
+
+    if (payload) {
+        dispatch({
+            type: types.UPDATE_SOLUONG_RACHUYEN,
+            payload: payload
+        });
+        currentRaChuyen = {
+            userName: payload.userName,
+            loSxId: payload.loSxId,
+            mauSpId: payload.mauSpId,
+            coSpId: payload.coSpId,
+            soluongRaChuyen: payload.soluongRaChuyen,
+            nguoiNhapId: payload.nguoiNhapId,
+            createDate: payload.createDate
+        };
+
+        addtoQueueAction = { type: types.ADD_ACTION_TO_QUEUE, payload: currentRaChuyen };
+    }
+    if (isConnected) {
+        try {
+            const url = `${API_BASE_URL}/loSx/updateSlRaChuyenTheoMang`;
+            const requestConfig = {
+                method: 'post',
+                url: url,
+                timeout: 2000,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    currentRaChuyen: currentRaChuyen,
+                    arrUnsaveRaChuyen: actionQueue
+                }
+            };
+            const { data } = await axios(requestConfig);
+            if (data.results) {
+                if (data.results.returnValue == 1) {
+                    dispatch({ type: types.SYNC_DATA_SUCCESS });
+                    if (callback) callback();
+                } else if (payload && data.results.returnValue == -1) {
+                    dispatch(addtoQueueAction);
+                }
+            }
+        } catch (err) {
+            if (payload) dispatch(addtoQueueAction);
+        }
+    } else {
+        if (payload) dispatch(addtoQueueAction);
+    }
 }

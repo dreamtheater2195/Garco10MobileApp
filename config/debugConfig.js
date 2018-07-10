@@ -1,5 +1,5 @@
 export default {
-    reduxLogging: __DEV__,
+    reduxLogging: false,
     yellowBox: __DEV__,
     useReactotron: __DEV__
 }

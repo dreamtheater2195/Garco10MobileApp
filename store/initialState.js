@@ -12,6 +12,7 @@ export default {
         lohang: []
     },
     network: {
-        isConnected: false
+        isConnected: false,
+        actionQueue: []
     }
 }

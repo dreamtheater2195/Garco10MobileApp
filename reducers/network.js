@@ -8,6 +8,16 @@ const network = (state = initialState.network, action) => {
                 ...state,
                 isConnected: action.payload
             }
+        case types.ADD_ACTION_TO_QUEUE:
+            return {
+                ...state,
+                actionQueue: [...state.actionQueue, action.payload]
+            }
+        case types.SYNC_DATA_SUCCESS:
+            return {
+                ...state,
+                actionQueue: []
+            }
         default:
             return state;
     }
