@@ -47,8 +47,7 @@ class LoHangUpdateScreen extends Component {
     }
 
     updateSoLuongRaChuyen = (num) => {
-        const index = this.props.navigation.getParam('lohangIndex');
-        const lohang = this.props.dsLoHang[index];
+        const { lohang, currentUser } = this.props;
 
         const soLuongRaChuyen = parseInt(num);
         if (lohang.RaChuyen_NgayHienTai <= 0 && soLuongRaChuyen < 0) {
@@ -58,7 +57,6 @@ class LoHangUpdateScreen extends Component {
                 ToastAndroid.CENTER
             );
         }
-        const currentUser = this.props;
         let slRaChuyen = lohang.RaChuyen_NgayHienTai ? lohang.RaChuyen_NgayHienTai + soLuongRaChuyen : soLuongRaChuyen;
         if (slRaChuyen < 0) slRaChuyen = 0;
 
@@ -70,8 +68,7 @@ class LoHangUpdateScreen extends Component {
     }
 
     render() {
-        const index = this.props.navigation.getParam('lohangIndex');
-        const lohang = this.props.dsLoHang[index];
+        const { lohang } = this.props;
         return (
             <LoHangInfo lohang={lohang}>
                 <View style={styles.buttonContainer}>
@@ -113,10 +110,14 @@ class LoHangUpdateScreen extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    dsLoHang: state.garco10.lohang,
-    currentUser: state.auth.user
-});
+const mapStateToProps = (state, ownProps) => {
+    const index = ownProps.navigation.getParam('lohangIndex');
+    const lohang = state.garco10.lohang[index];
+    return {
+        lohang,
+        currentUser: state.auth.user
+    }
+}
 
 export default connect(
     mapStateToProps,

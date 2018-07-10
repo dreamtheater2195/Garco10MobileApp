@@ -15,8 +15,11 @@ export default () => {
     if (module.hot) {
         module.hot.accept(() => {
             const nextRootReducer = require('../reducers/index').default;
+
             store.replaceReducer(
-                persistReducer(persistConfig, nextRootReducer)
+                ReduxPersist.active
+                    ? persistReducer(ReduxPersist.storeConfig, nextRootReducer)
+                    : nextRootReducer
             );
         });
     }

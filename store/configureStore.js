@@ -10,8 +10,10 @@ export default (rootReducer) => {
     if (Config.reduxLogging) {
         middleware.push(logger);
     }
-    enhancers.push(applyMiddleware(...middleware))
-    const store = createStore(rootReducer, compose(...enhancers));
+    enhancers.push(applyMiddleware(...middleware));
+
+    const createAppropriateStore = Config.useReactotron ? console.tron.createStore : createStore;
+    const store = createAppropriateStore(rootReducer, compose(...enhancers));
 
     if (ReduxPersist.active) {
         Rehydration.updateReducers(store);
