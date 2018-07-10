@@ -1,12 +1,12 @@
 import { AsyncStorage } from 'react-native';
 
 const REDUX_PERSIST = {
-    active: false,
+    active: true,
     reducerVersion: '1.0',
     storeConfig: {
         key: 'root',
         storage: AsyncStorage,
-        blacklist: []
+        blacklist: ['network']
     }
 }
 

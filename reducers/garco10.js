@@ -21,9 +21,14 @@ const garco10 = (state = initialState.garco10, action) => {
                 fetching: false,
                 error: action.payload
             }
-        case types.SET_DATA_LOHANG:
-            const index = state.lohang.findIndex((item) => item.ID_LoSanXuat === action.payload.ID_LoSanXuat);
-            const newlohang = Object.assign([], state.lohang, { [index]: action.payload });
+        case types.UPDATE_SOLUONG_RACHUYEN:
+            const item = state.lohang.filter((item) => item.ID_LoSanXuat == action.payload.loSxId)[0];
+            const updatedItem = {
+                ...item,
+                SoLuong_RaChuyen: action.payload.SoLuong_RaChuyen,
+                RaChuyen_NgayHienTai: action.payload.RaChuyen_NgayHienTai
+            };
+            const newlohang = Object.assign([], state.lohang, { [index]: updatedItem });
             return {
                 ...state,
                 lohang: newlohang

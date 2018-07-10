@@ -10,5 +10,8 @@ export default {
         fetching: false,
         error: '',
         lohang: []
+    },
+    network: {
+        isConnected: false
     }
 }

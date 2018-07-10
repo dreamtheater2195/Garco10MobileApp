@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logOut } from '../actions/user_actions';
-import { fetchDataLoHang } from '../actions/garco10_actions';
-import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { logOut, fetchDataLoHang, changeConnectionState } from '../actions';
+import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -57,11 +56,39 @@ class LoHangScreen extends Component {
     }
 
     componentDidMount() {
+        NetInfo.isConnected.fetch().then(this.handleConnectionChange);
+        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
         this.props.navigation.setParams({
             logOutUser: this.logOutUser
         });
-        this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
     }
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+    }
+
+    handleConnectionChange = (isConnected) => {
+        this.props.changeConnectionState(isConnected);
+        if (isConnected) {
+            //remove action queue
+
+            //fetch latest data
+            this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
+        }
+        if (!isConnected) {
+            ToastAndroid.showWithGravity(
+                'Waiting for network connection',
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+            );
+        } else {
+            ToastAndroid.showWithGravity(
+                'Connected to network',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
+        }
+    };
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.auth.user) {
@@ -166,13 +193,15 @@ class LoHangScreen extends Component {
 
 const mapStateToProps = (state) => ({
     garco10: state.garco10,
-    auth: state.auth
+    auth: state.auth,
+    isConnected: state.network.isConnected
 });
 export default connect(
     mapStateToProps,
     {
         logOut,
-        fetchDataLoHang
+        fetchDataLoHang,
+        changeConnectionState
     }
 )(LoHangScreen);
 

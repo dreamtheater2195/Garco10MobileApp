@@ -32,7 +32,37 @@ export const fetchDataLoHang = (ID_LoSanXuat, ID_DonVi) => async dispatch => {
     }
 }
 
-export const setDataLoHang = (lohang) => ({
-    type: types.SET_DATA_LOHANG,
-    payload: lohang
-});
+export const updateSLRaChuyen = (data) => dispatch => {
+    dispatch({
+        type: types.UPDATE_SOLUONG_RACHUYEN,
+        payload: data
+    });
+    // const currentRaChuyen = {
+    //     userName: data.userName,
+    //     loSxId: data.loSxId,
+    //     mauSpId: data.mauSpId,
+    //     coSpId: data.coSpId,
+    //     soluongRaChuyen: data.soluongRaChuyen,
+    //     nguoiNhapId: data.nguoiNhapId,
+    //     createDate: data.createDate
+    // };
+    // try {
+    //     const url = `${API_BASE_URL}/loSx/updateSlRaChuyenTheoMang`;
+    //     const requestConfig = {
+    //         method: 'post',
+    //         url: url,
+    //         timeout: 2000,
+    //         data: {
+    //             currentRaChuyen: currentRaChuyen
+    //         }
+    //     };
+    //     const { data } = await axios(requestConfig);
+    //     if (data.results && data.results.returnValue == 1) {
+    //         dispatch({ type: types.UPDATE_SOLUONG_RACHUYEN_SUCCESS });
+    //     } else {
+    //         //add to queue
+    //     }
+    // } catch (err) {
+    //     //add to queue
+    // }
+}

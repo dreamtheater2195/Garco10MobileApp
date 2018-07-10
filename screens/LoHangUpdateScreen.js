@@ -4,7 +4,7 @@ import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoHangInfo from '../components/LoHangInfo';
 import { Colors, Metrics } from '../themes';
-import { setDataLoHang } from '../actions';
+import { updateSLRaChuyen } from '../actions';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -63,8 +63,18 @@ class LoHangUpdateScreen extends Component {
         let totalRaChuyen = lohang.SoLuong_RaChuyen + soLuongRaChuyen;
         if (totalRaChuyen < 0) totalRaChuyen = 0;
 
-        const newLoHang = { ...lohang, SoLuong_RaChuyen: totalRaChuyen, RaChuyen_NgayHienTai: slRaChuyen };
-        this.props.setDataLoHang(newLoHang);
+        const payload = {
+            SoLuong_RaChuyen: totalRaChuyen,
+            RaChuyen_NgayHienTai: slRaChuyen,
+            userName: currentUser.userName,
+            loSxId: lohang.ID_LoSanXuat,
+            mauSpId: 0,
+            coSpId: 0,
+            soluongRaChuyen: soluongRaChuyen,
+            nguoiNhapId: currentUser.ID_NhanSu,
+            createDate: new Date()
+        };
+        this.props.updateSLRaChuyen(payload);
     }
 
     render() {
@@ -115,11 +125,12 @@ const mapStateToProps = (state, ownProps) => {
     const lohang = state.garco10.lohang[index];
     return {
         lohang,
-        currentUser: state.auth.user
+        currentUser: state.auth.user,
+        isConnected: state.network.isConnected
     }
 }
 
 export default connect(
     mapStateToProps,
-    { setDataLoHang }
+    { updateSLRaChuyen }
 )(LoHangUpdateScreen);
