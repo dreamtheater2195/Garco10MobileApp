@@ -58,7 +58,7 @@ const { gridHeaderText, gridText, cardRowContainer, cardRowLabel, cardDateContai
 
 const LoHangInfo = ({ lohang, children }) => {
     return (
-        <Card title={lohang.Ma_LoSanXuat} wrapperStyle={{ flex: 1 }} containerStyle={{ flex: 1, marginBottom: 10 }}>
+        <Card title={lohang.Ma_LoSanXuat} wrapperStyle={{ flex: 1 }} containerStyle={{ flex: 1, marginBottom: 10, zIndex: 1 }}>
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Khách hàng: </Text>
                 <Text style={[cardRowText, { color: Colors.error }]}>{lohang.Ten_KhachHang}</Text>

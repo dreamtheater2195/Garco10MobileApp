@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Dimensions, View, StyleSheet, ActivityIndicator, AsyncStorage, ScrollView, RefreshControl, TouchableOpacity, Picker, PickerIOS, Platform, InteractionManager, ToastAndroid } from 'react-native';
+import { Animated, View, StyleSheet, ActivityIndicator, AsyncStorage, ScrollView, RefreshControl, TouchableOpacity, Picker, PickerIOS, Platform, InteractionManager, ToastAndroid } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoHangInfo from '../components/LoHangInfo';
 import { Colors, Metrics } from '../themes';
 import { updateSLRaChuyen } from '../actions';
+import SlidingUpPanel from 'rn-sliding-up-panel';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -33,6 +34,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around'
+    },
+    messageBar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: Colors.bloodOrange
     }
 });
 class LoHangUpdateScreen extends Component {
@@ -80,42 +88,44 @@ class LoHangUpdateScreen extends Component {
     render() {
         const { lohang } = this.props;
         return (
-            <LoHangInfo lohang={lohang}>
-                <View style={styles.buttonContainer}>
-                    <View style={styles.buttonRow}>
-                        <Button
-                            icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
-                            title="1"
-                            buttonStyle={[styles.button, styles.buttonPlus]}
-                            titleStyle={styles.buttonTitle}
-                            onPress={() => this.updateSoLuongRaChuyen(1)}
-                        />
-                        <Button
-                            icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
-                            title="1"
-                            buttonStyle={[styles.button, styles.buttonMinus]}
-                            titleStyle={styles.buttonTitle}
-                            onPress={() => this.updateSoLuongRaChuyen(-1)}
-                        />
+            <View style={{ flex: 1 }}>
+                <LoHangInfo lohang={lohang}>
+                    <View style={styles.buttonContainer}>
+                        <View style={styles.buttonRow}>
+                            <Button
+                                icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
+                                title="1"
+                                buttonStyle={[styles.button, styles.buttonPlus]}
+                                titleStyle={styles.buttonTitle}
+                                onPress={() => this.updateSoLuongRaChuyen(1)}
+                            />
+                            <Button
+                                icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
+                                title="1"
+                                buttonStyle={[styles.button, styles.buttonMinus]}
+                                titleStyle={styles.buttonTitle}
+                                onPress={() => this.updateSoLuongRaChuyen(-1)}
+                            />
+                        </View>
+                        <View style={styles.buttonRow}>
+                            <Button
+                                icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
+                                title="10"
+                                buttonStyle={[styles.button, styles.buttonPlus]}
+                                titleStyle={styles.buttonTitle}
+                                onPress={() => this.updateSoLuongRaChuyen(10)}
+                            />
+                            <Button
+                                icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
+                                title="10"
+                                buttonStyle={[styles.button, styles.buttonMinus]}
+                                titleStyle={styles.buttonTitle}
+                                onPress={() => this.updateSoLuongRaChuyen(-10)}
+                            />
+                        </View>
                     </View>
-                    <View style={styles.buttonRow}>
-                        <Button
-                            icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
-                            title="10"
-                            buttonStyle={[styles.button, styles.buttonPlus]}
-                            titleStyle={styles.buttonTitle}
-                            onPress={() => this.updateSoLuongRaChuyen(10)}
-                        />
-                        <Button
-                            icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
-                            title="10"
-                            buttonStyle={[styles.button, styles.buttonMinus]}
-                            titleStyle={styles.buttonTitle}
-                            onPress={() => this.updateSoLuongRaChuyen(-10)}
-                        />
-                    </View>
-                </View>
-            </LoHangInfo>
+                </LoHangInfo>
+            </View>
         );
     }
 }
@@ -126,7 +136,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         lohang,
         currentUser: state.auth.user,
-        isConnected: state.network.isConnected
+        isConnected: state.network.isConnected,
+        syncing: state.network.syncing
     }
 }
 

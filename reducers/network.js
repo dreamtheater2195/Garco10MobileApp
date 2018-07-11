@@ -11,11 +11,18 @@ const network = (state = initialState.network, action) => {
         case types.ADD_ACTION_TO_QUEUE:
             return {
                 ...state,
+                syncing: false,
                 actionQueue: [...state.actionQueue, action.payload]
+            }
+        case types.SYNC_DATA:
+            return {
+                ...state,
+                syncing: true
             }
         case types.SYNC_DATA_SUCCESS:
             return {
                 ...state,
+                syncing: false,
                 actionQueue: []
             }
         default:

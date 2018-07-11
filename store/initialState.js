@@ -13,6 +13,7 @@ export default {
     },
     network: {
         isConnected: false,
+        syncing: false,
         actionQueue: []
     }
 }

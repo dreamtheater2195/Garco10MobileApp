@@ -35,8 +35,6 @@ export const updateSLRaChuyen = (payload, callback) => async (dispatch, getState
 
     const { isConnected, actionQueue } = getState().network;
 
-    console.log('Network', isConnected, actionQueue);
-
     let currentRaChuyen = null;
     let addtoQueueAction = null;
 
@@ -57,9 +55,14 @@ export const updateSLRaChuyen = (payload, callback) => async (dispatch, getState
 
         addtoQueueAction = { type: types.ADD_ACTION_TO_QUEUE, payload: currentRaChuyen };
     }
+
     if (isConnected) {
+        dispatch({ type: types.SYNC_DATA });
         try {
             const url = `${API_BASE_URL}/loSx/updateSlRaChuyenTheoMang`;
+            const CancelToken = axios.CancelToken;
+            const source = CancelToken.source();
+
             const requestConfig = {
                 method: 'post',
                 url: url,
@@ -71,9 +74,15 @@ export const updateSLRaChuyen = (payload, callback) => async (dispatch, getState
                 data: {
                     currentRaChuyen: currentRaChuyen,
                     arrUnsaveRaChuyen: actionQueue
-                }
+                },
+                cancelToken: source.token
             };
+            setTimeout(() => {
+                source.cancel();
+            }, 4000);
+
             const { data } = await axios(requestConfig);
+
             if (data.results) {
                 if (data.results.returnValue == 1) {
                     dispatch({ type: types.SYNC_DATA_SUCCESS });

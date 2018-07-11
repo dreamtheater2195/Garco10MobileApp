@@ -19,7 +19,6 @@ const auth = (state = initialState.auth, action) => {
                 error: ''
             };
         case types.CHECK_LOGIN_SUCCESS:
-            console.log('action: CHECK_LOGIN_SUCCESS');
             return {
                 ...state,
                 ...initialState.auth,
