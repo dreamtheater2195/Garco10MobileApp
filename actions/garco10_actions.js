@@ -79,7 +79,7 @@ export const updateSLRaChuyen = (payload, callback) => async (dispatch, getState
             };
             setTimeout(() => {
                 source.cancel();
-            }, 4000);
+            }, 3000);
 
             const { data } = await axios(requestConfig);
 

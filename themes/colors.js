@@ -24,7 +24,8 @@ const colors = {
     text: '#E0D7E5',
     dodgerBlue: '#1e90ff',
     darkPink: '#660033',
-    aliceBlue: 'rgba(171, 189, 219, 1)'
+    aliceBlue: 'rgba(171, 189, 219, 1)',
+    green: '#46b237'
 }
 
 export default colors;

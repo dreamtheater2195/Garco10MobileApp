@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
 const { gridHeaderText, gridText, cardRowContainer, cardRowLabel, cardDateContainer, cardDateText, cardRowText } = styles;
 
 
-const LoHangInfo = ({ lohang, children }) => {
+const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
     return (
-        <Card title={lohang.Ma_LoSanXuat} wrapperStyle={{ flex: 1 }} containerStyle={{ flex: 1, marginBottom: 10, zIndex: 1 }}>
+        <Card title={lohang.Ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Khách hàng: </Text>
                 <Text style={[cardRowText, { color: Colors.error }]}>{lohang.Ten_KhachHang}</Text>

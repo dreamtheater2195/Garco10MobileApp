@@ -7,6 +7,7 @@ import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import LoHangInfo from '../components/LoHangInfo';
 import { Colors, Fonts, Metrics } from '../themes';
+import * as Animatable from 'react-native-animatable';
 
 const styles = StyleSheet.create({
     defaultRowContainer: {
@@ -129,6 +130,38 @@ class LoHangScreen extends Component {
             });
         }
     }
+
+    renderMessageBar = () => {
+        const { isConnected } = this.props;
+        return (
+            <Animatable.View
+                animation={isConnected ? "slideOutUp" : "slideInDown"}
+                duration={2000}
+                style={{
+                    elevation: 2,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: isConnected ? Colors.green : Colors.bloodOrange,
+                    padding: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center'
+                }}>
+                {(!isConnected) && <ActivityIndicator
+                    color={Colors.snow}
+                    style={{ marginRight: 5 }}
+                />}
+                <Text style={{
+                    color: Colors.snow,
+                    textAlign: 'center'
+                }}>
+                    {isConnected ? "Đã kết nối vào mạng" : "Không có kết nối mạng"}
+                </Text>
+            </Animatable.View>
+        );
+    }
+
     render() {
         const dateString = moment().format('DD/MM/YYYY');
         if (this.props.garco10.fetching) {
@@ -143,7 +176,28 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-
+        if (this.props.garco10.lohang.length === 0) {
+            return (
+                <ScrollView
+                    contentContainerStyle={defaultColumnContainer}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.props.garco10.fetching}
+                            onRefresh={this.fetchData}
+                            colors={[Colors.ember]}
+                            tintColor="white"
+                            title="loading..."
+                            titleColor="white"
+                            progressBackgroundColor="white"
+                        />
+                    }
+                >
+                    <Text style={Fonts.style.body1}>
+                        Không có lô sản xuất
+                    </Text>
+                </ScrollView>
+            );
+        }
         if (this.state.logingOut) {
             return (
                 <View style={defaultColumnContainer}>
@@ -178,10 +232,10 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-        if (this.props.garco10.lohang.length === 0) {
-            return (
+        return (
+            <View style={styles.defaultColumnContainer}>
+                {this.renderMessageBar()}
                 <ScrollView
-                    contentContainerStyle={defaultColumnContainer}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.props.garco10.fetching}
@@ -193,29 +247,11 @@ class LoHangScreen extends Component {
                             progressBackgroundColor="white"
                         />
                     }
+                    contentContainerStyle={{ backgroundColor: 'red', margin: 0 }}
                 >
-                    <Text style={Fonts.style.body1}>
-                        Không có lô sản xuất
-                    </Text>
+                    {this.renderLoHang()}
                 </ScrollView>
-            );
-        }
-        return (
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.props.garco10.fetching}
-                        onRefresh={this.fetchData}
-                        colors={[Colors.ember]}
-                        tintColor="white"
-                        title="loading..."
-                        titleColor="white"
-                        progressBackgroundColor="white"
-                    />
-                }
-            >
-                {this.renderLoHang()}
-            </ScrollView>
+            </View>
         )
     }
 }
@@ -223,7 +259,7 @@ class LoHangScreen extends Component {
 const mapStateToProps = (state) => ({
     garco10: state.garco10,
     auth: state.auth,
-    network: state.network
+    isConnected: state.network.isConnected
 });
 export default connect(
     mapStateToProps,

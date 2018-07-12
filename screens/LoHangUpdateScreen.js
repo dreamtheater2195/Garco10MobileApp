@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
-import { Animated, View, StyleSheet, ActivityIndicator, AsyncStorage, ScrollView, RefreshControl, TouchableOpacity, Picker, PickerIOS, Platform, InteractionManager, ToastAndroid } from 'react-native';
+import { Animated, View, StyleSheet, ActivityIndicator, AsyncStorage, ScrollView, RefreshControl, TouchableOpacity, Picker, PickerIOS, Platform, InteractionManager, ToastAndroid, TouchableWithoutFeedback } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoHangInfo from '../components/LoHangInfo';
-import { Colors, Metrics } from '../themes';
+import AnimatedRoundButtonWithIcon from '../components/AnimatedRoundButtonWithIcon';
+import { Colors, Metrics, Fonts } from '../themes';
 import { updateSLRaChuyen } from '../actions';
-import SlidingUpPanel from 'rn-sliding-up-panel';
+import * as Animatable from 'react-native-animatable';
+import fonts from '../themes/fonts';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center'
-    },
-    button: {
-        borderRadius: Math.round(Metrics.screenWidth) / 10,
-        width: Metrics.screenWidth / 5,
-        height: Metrics.screenWidth / 5
-    },
-    buttonPlus: {
-        backgroundColor: Colors.facebook
-    },
-    buttonMinus: {
-        backgroundColor: Colors.bloodOrange
-    },
-    buttonTitle: {
-        fontSize: 20
     },
     buttonContainer: {
         flex: 6,
@@ -36,14 +25,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     messageBar: {
-        position: 'absolute',
+        position: 'relative',
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: Colors.bloodOrange
+        backgroundColor: Colors.bloodOrange,
+        padding: 5
     }
 });
 class LoHangUpdateScreen extends Component {
+
     constructor(props) {
         super(props);
     }
@@ -54,7 +45,35 @@ class LoHangUpdateScreen extends Component {
         }
     }
 
-    updateSoLuongRaChuyen = (num) => {
+    handlePress = (componentRef) => {
+        componentRef.setNativeProps({
+            style: {
+                zIndex: 1,
+            },
+        });
+        componentRef.animate('bounce', 1000).then(() => {
+            componentRef.setNativeProps({
+                style: {
+                    zIndex: 0,
+                },
+            });
+        });
+    }
+
+    updateSoLuongRaChuyen = (num, componentRef, animationType) => {
+        componentRef.setNativeProps({
+            style: {
+                zIndex: 1,
+            },
+        });
+        componentRef.animate(animationType, 1000).then(() => {
+            componentRef.setNativeProps({
+                style: {
+                    zIndex: 0,
+                },
+            });
+        });
+
         const { lohang, currentUser } = this.props;
 
         const soLuongRaChuyen = parseInt(num);
@@ -85,47 +104,79 @@ class LoHangUpdateScreen extends Component {
         this.props.updateSLRaChuyen(payload);
     }
 
+    renderNetworkStatusBar = () => {
+        const { isConnected } = this.props;
+        return (
+            <Animatable.View
+                animation={isConnected ? "slideOutUp" : "slideInDown"}
+                duration={2000}
+                style={{
+                    elevation: 2,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: isConnected ? Colors.green : Colors.bloodOrange,
+                    padding: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center'
+                }}>
+                {(!isConnected) && <ActivityIndicator
+                    color={Colors.snow}
+                    style={{ marginRight: 5 }}
+                />}
+                <Text style={{
+                    color: Colors.snow,
+                    textAlign: 'center'
+                }}>
+                    {isConnected ? "Đã kết nối vào mạng" : "Không có kết nối mạng"}
+                </Text>
+            </Animatable.View>
+        );
+    }
+
     render() {
         const { lohang } = this.props;
         return (
             <View style={{ flex: 1 }}>
-                <LoHangInfo lohang={lohang}>
+                {this.renderNetworkStatusBar()}
+                <LoHangInfo lohang={lohang} containerStyle={{ margin: 0 }}>
                     <View style={styles.buttonContainer}>
                         <View style={styles.buttonRow}>
-                            <Button
-                                icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
+                            <AnimatedRoundButtonWithIcon
+                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(1, componentRef, animationType)}
+                                color={Colors.facebook}
+                                iconName="ios-add"
                                 title="1"
-                                buttonStyle={[styles.button, styles.buttonPlus]}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => this.updateSoLuongRaChuyen(1)}
+                                animationType="rubberBand"
                             />
-                            <Button
-                                icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
+                            <AnimatedRoundButtonWithIcon
+                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(-1, componentRef, animationType)}
+                                color={Colors.bloodOrange}
+                                iconName="ios-remove"
                                 title="1"
-                                buttonStyle={[styles.button, styles.buttonMinus]}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => this.updateSoLuongRaChuyen(-1)}
+                                animationType="pulse"
                             />
                         </View>
                         <View style={styles.buttonRow}>
-                            <Button
-                                icon={<Icon type='ionicon' name='ios-add' color={Colors.snow} />}
+                            <AnimatedRoundButtonWithIcon
+                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(1, componentRef, animationType)}
+                                color={Colors.facebook}
+                                iconName="ios-add"
                                 title="10"
-                                buttonStyle={[styles.button, styles.buttonPlus]}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => this.updateSoLuongRaChuyen(10)}
+                                animationType="rubberBand"
                             />
-                            <Button
-                                icon={<Icon type='ionicon' name='ios-remove' color={Colors.snow} />}
+                            <AnimatedRoundButtonWithIcon
+                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(-10, componentRef, animationType)}
+                                color={Colors.bloodOrange}
+                                iconName="ios-remove"
                                 title="10"
-                                buttonStyle={[styles.button, styles.buttonMinus]}
-                                titleStyle={styles.buttonTitle}
-                                onPress={() => this.updateSoLuongRaChuyen(-10)}
+                                animationType="pulse"
                             />
                         </View>
                     </View>
                 </LoHangInfo>
-            </View>
+            </View >
         );
     }
 }
