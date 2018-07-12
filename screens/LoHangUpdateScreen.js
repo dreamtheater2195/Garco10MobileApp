@@ -4,6 +4,7 @@ import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoHangInfo from '../components/LoHangInfo';
 import AnimatedRoundButtonWithIcon from '../components/AnimatedRoundButtonWithIcon';
+import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Metrics, Fonts } from '../themes';
 import { updateSLRaChuyen } from '../actions';
 import * as Animatable from 'react-native-animatable';
@@ -107,31 +108,46 @@ class LoHangUpdateScreen extends Component {
     renderNetworkStatusBar = () => {
         const { isConnected } = this.props;
         return (
-            <Animatable.View
+            <AnimatedStatusBar
                 animation={isConnected ? "slideOutUp" : "slideInDown"}
                 duration={2000}
-                style={{
-                    elevation: 2,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: isConnected ? Colors.green : Colors.bloodOrange,
-                    padding: 5,
-                    flexDirection: 'row',
-                    justifyContent: 'center'
-                }}>
+                backgroundColor={isConnected ? Colors.green : Colors.bloodOrange}
+                position={'top'}
+            >
                 {(!isConnected) && <ActivityIndicator
                     color={Colors.snow}
                     style={{ marginRight: 5 }}
                 />}
                 <Text style={{
-                    color: Colors.snow,
+                    ...Fonts.style.body2,
                     textAlign: 'center'
                 }}>
                     {isConnected ? "Đã kết nối vào mạng" : "Không có kết nối mạng"}
                 </Text>
-            </Animatable.View>
+            </AnimatedStatusBar>
+        );
+    }
+
+    renderSyncingStatusBar = () => {
+        const { syncing } = this.props;
+        return (
+            <AnimatedStatusBar
+                animation={syncing ? "slideInDown" : "slideOutUp"}
+                duration={2000}
+                backgroundColor={syncing ? Colors.bloodOrange : Colors.green}
+                position={'bottom'}
+            >
+                {(syncing) && <ActivityIndicator
+                    color={Colors.snow}
+                    style={{ marginRight: 5 }}
+                />}
+                <Text style={{
+                    ...Fonts.style.body2,
+                    textAlign: 'center'
+                }}>
+                    {syncing ? "Đang đồng bộ dữ liệu" : "Dữ liệu đã đồng bộ"}
+                </Text>
+            </AnimatedStatusBar>
         );
     }
 
@@ -176,6 +192,7 @@ class LoHangUpdateScreen extends Component {
                         </View>
                     </View>
                 </LoHangInfo>
+                {this.renderSyncingStatusBar()}
             </View >
         );
     }

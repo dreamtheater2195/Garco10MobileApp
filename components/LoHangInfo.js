@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { Text, Card } from 'react-native-elements';
+import { Text, Card, Icon } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import moment from 'moment';
 import { Colors, Fonts, Metrics } from '../themes';
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         borderColor: Colors.steel,
         paddingTop: 5,
-        paddingBottom: 5
+        paddingBottom: 5,
+        alignItems: 'center'
     },
     cardRowLabel: {
         fontFamily: Fonts.type.medium,

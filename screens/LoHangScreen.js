@@ -6,6 +6,7 @@ import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import LoHangInfo from '../components/LoHangInfo';
+import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Fonts, Metrics } from '../themes';
 import * as Animatable from 'react-native-animatable';
 
@@ -131,34 +132,48 @@ class LoHangScreen extends Component {
         }
     }
 
-    renderMessageBar = () => {
+    renderNetworkStatusBar = () => {
         const { isConnected } = this.props;
         return (
-            <Animatable.View
+            <AnimatedStatusBar
                 animation={isConnected ? "slideOutUp" : "slideInDown"}
                 duration={2000}
-                style={{
-                    elevation: 2,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: isConnected ? Colors.green : Colors.bloodOrange,
-                    padding: 5,
-                    flexDirection: 'row',
-                    justifyContent: 'center'
-                }}>
+                backgroundColor={isConnected ? Colors.green : Colors.bloodOrange}
+                position={'top'}
+            >
                 {(!isConnected) && <ActivityIndicator
                     color={Colors.snow}
                     style={{ marginRight: 5 }}
                 />}
                 <Text style={{
-                    color: Colors.snow,
+                    ...Fonts.style.body2,
                     textAlign: 'center'
                 }}>
                     {isConnected ? "Đã kết nối vào mạng" : "Không có kết nối mạng"}
                 </Text>
-            </Animatable.View>
+            </AnimatedStatusBar>
+        );
+    }
+    renderSyncingStatusBar = () => {
+        const { syncing } = this.props;
+        return (
+            <AnimatedStatusBar
+                animation={syncing ? "slideInDown" : "slideOutUp"}
+                duration={2000}
+                backgroundColor={syncing ? Colors.bloodOrange : Colors.green}
+                position={'bottom'}
+            >
+                {(syncing) && <ActivityIndicator
+                    color={Colors.snow}
+                    style={{ marginRight: 5 }}
+                />}
+                <Text style={{
+                    ...Fonts.style.body2,
+                    textAlign: 'center'
+                }}>
+                    {syncing ? "Đang đồng bộ dữ liệu" : "Dữ liệu đã đồng bộ"}
+                </Text>
+            </AnimatedStatusBar>
         );
     }
 
@@ -233,8 +248,8 @@ class LoHangScreen extends Component {
             )
         }
         return (
-            <View style={styles.defaultColumnContainer}>
-                {this.renderMessageBar()}
+            <View style={{ flex: 1 }}>
+                {this.renderNetworkStatusBar()}
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -247,10 +262,10 @@ class LoHangScreen extends Component {
                             progressBackgroundColor="white"
                         />
                     }
-                    contentContainerStyle={{ backgroundColor: 'red', margin: 0 }}
                 >
                     {this.renderLoHang()}
                 </ScrollView>
+                {this.renderSyncingStatusBar()}
             </View>
         )
     }
