@@ -102,7 +102,11 @@ class LoHangUpdateScreen extends Component {
             nguoiNhapId: currentUser.ID_NhanSu,
             createDate: new Date()
         };
-        this.props.updateSLRaChuyen(payload);
+        this.props.updateSLRaChuyen(payload).then(() => {
+            console.log('+', soLuongRaChuyen);
+        }).catch((err) => {
+            console.log('updateSLRaChuyen Error', err);
+        });
     }
 
     renderNetworkStatusBar = () => {
@@ -135,7 +139,7 @@ class LoHangUpdateScreen extends Component {
                 animation={syncing ? "slideInDown" : "slideOutUp"}
                 duration={2000}
                 backgroundColor={syncing ? Colors.bloodOrange : Colors.green}
-                position={'bottom'}
+                position={'top'}
             >
                 {(syncing) && <ActivityIndicator
                     color={Colors.snow}
@@ -145,7 +149,7 @@ class LoHangUpdateScreen extends Component {
                     ...Fonts.style.body2,
                     textAlign: 'center'
                 }}>
-                    {syncing ? "Đang đồng bộ dữ liệu" : "Dữ liệu đã đồng bộ"}
+                    "Đang đồng bộ dữ liệu"
                 </Text>
             </AnimatedStatusBar>
         );
@@ -176,7 +180,7 @@ class LoHangUpdateScreen extends Component {
                         </View>
                         <View style={styles.buttonRow}>
                             <AnimatedRoundButtonWithIcon
-                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(1, componentRef, animationType)}
+                                onPress={(componentRef, animationType) => this.updateSoLuongRaChuyen(10, componentRef, animationType)}
                                 color={Colors.facebook}
                                 iconName="ios-add"
                                 title="10"

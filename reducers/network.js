@@ -1,6 +1,6 @@
 import * as types from '../actions/types';
 import initialState from '../store/initialState';
-
+import _ from 'lodash';
 const network = (state = initialState.network, action) => {
     switch (action.type) {
         case types.CHANGE_CONNECTION_STATUS:
@@ -19,11 +19,15 @@ const network = (state = initialState.network, action) => {
                 ...state,
                 syncing: true
             }
-        case types.SYNC_DATA_SUCCESS:
+        case types.SYNC_DATA_STOP:
             return {
                 ...state,
-                syncing: false,
-                actionQueue: []
+                syncing: false
+            }
+        case types.REMOVE_ACTION_FROM_QUEUE:
+            return {
+                ...state,
+                actionQueue: _.without(state.actionQueue, action.payload)
             }
         default:
             return state;

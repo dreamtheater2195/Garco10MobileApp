@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logOut, fetchDataLoHang, changeConnectionState, updateSLRaChuyen } from '../actions';
+import { logOut, fetchDataLoHang, changeConnectionState, syncQueueData } from '../actions';
 import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
@@ -74,31 +74,27 @@ class LoHangScreen extends Component {
         if (isConnected) {
             this.fetchData();
         }
-        if (!isConnected) {
-            ToastAndroid.showWithGravity(
-                'Không có kết nối mạng',
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-            );
-        }
     };
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.auth.user) {
             this.props.navigation.navigate('Auth');
         }
-        if (nextProps.garco10.error && nextProps.garco10.error !== this.props.garco10.error) {
-            ToastAndroid.showWithGravity(
-                nextProps.garco10.error,
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-            );
-        }
     }
 
     fetchData = () => {
-        //sync data and load lohang
-        this.props.updateSLRaChuyen(null, () => this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi));
+        this.props.syncQueueData().then((done) => {
+            if (done) {
+                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
+            }
+        }).catch((err) => {
+            console.log('syncQueueData error', err);
+            ToastAndroid.showWithGravity(
+                'Không thể lấy danh sách lô sản xuất mới nhất',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
+        });
     }
 
     logOutUser = () => {
@@ -161,7 +157,7 @@ class LoHangScreen extends Component {
                 animation={syncing ? "slideInDown" : "slideOutUp"}
                 duration={2000}
                 backgroundColor={syncing ? Colors.bloodOrange : Colors.green}
-                position={'bottom'}
+                position={'top'}
             >
                 {(syncing) && <ActivityIndicator
                     color={Colors.snow}
@@ -171,7 +167,7 @@ class LoHangScreen extends Component {
                     ...Fonts.style.body2,
                     textAlign: 'center'
                 }}>
-                    {syncing ? "Đang đồng bộ dữ liệu" : "Dữ liệu đã đồng bộ"}
+                    Đang đồng bộ dữ liệu
                 </Text>
             </AnimatedStatusBar>
         );
@@ -250,6 +246,7 @@ class LoHangScreen extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {this.renderNetworkStatusBar()}
+                {this.renderSyncingStatusBar()}
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -265,7 +262,6 @@ class LoHangScreen extends Component {
                 >
                     {this.renderLoHang()}
                 </ScrollView>
-                {this.renderSyncingStatusBar()}
             </View>
         )
     }
@@ -282,7 +278,7 @@ export default connect(
         logOut,
         fetchDataLoHang,
         changeConnectionState,
-        updateSLRaChuyen
+        syncQueueData
     }
 )(LoHangScreen);
 

@@ -10,10 +10,6 @@ const store = createStore();
 
 class App extends React.Component {
 
-  componentDidMount() {
-    AsyncStorage.clear();
-  }
-
   render() {
     return (
       <Provider store={store}>
