@@ -8,6 +8,8 @@ import { AsyncStorage } from 'react-native';
 
 const store = createStore();
 
+//AsyncStorage.clear();
+
 class App extends React.Component {
 
   render() {

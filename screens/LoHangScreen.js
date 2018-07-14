@@ -85,12 +85,20 @@ class LoHangScreen extends Component {
     fetchData = () => {
         this.props.syncQueueData().then((done) => {
             if (done) {
-                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
+                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi).then(() => {
+                    console.log('done fetching new data');
+                }).catch(err => {
+                    ToastAndroid.showWithGravity(
+                        'Không thể lấy danh sách lô sản xuất mới nhất',
+                        ToastAndroid.SHORT,
+                        ToastAndroid.BOTTOM,
+                    );
+                });
             }
         }).catch((err) => {
             console.log('syncQueueData error', err);
             ToastAndroid.showWithGravity(
-                'Không thể lấy danh sách lô sản xuất mới nhất',
+                'Không thể đồng bộ dữ liệu với máy chủ',
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
             );

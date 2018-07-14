@@ -78,24 +78,25 @@ class LoHangUpdateScreen extends Component {
         const { lohang, currentUser } = this.props;
 
         const soLuongRaChuyen = parseInt(num);
-        if (lohang.RaChuyen_NgayHienTai <= 0 && soLuongRaChuyen < 0) {
+        if (lohang.raChuyen_NgayHienTai <= 0 && soLuongRaChuyen < 0) {
             return ToastAndroid.showWithGravity(
                 'Cảnh báo. Ra chuyền hiện tại đang là 0',
                 ToastAndroid.SHORT,
                 ToastAndroid.CENTER
             );
         }
-        let slRaChuyen = lohang.RaChuyen_NgayHienTai ? lohang.RaChuyen_NgayHienTai + soLuongRaChuyen : soLuongRaChuyen;
+        let slRaChuyen = lohang.raChuyen_NgayHienTai ?
+            (lohang.raChuyen_NgayHienTai + soLuongRaChuyen) : soLuongRaChuyen;
         if (slRaChuyen < 0) slRaChuyen = 0;
 
-        let totalRaChuyen = lohang.SoLuong_RaChuyen + soLuongRaChuyen;
+        let totalRaChuyen = lohang.soLuong_RaChuyen + soLuongRaChuyen;
         if (totalRaChuyen < 0) totalRaChuyen = 0;
 
         const payload = {
-            SoLuong_RaChuyen: totalRaChuyen,
-            RaChuyen_NgayHienTai: slRaChuyen,
+            soLuong_RaChuyen: totalRaChuyen,
+            raChuyen_NgayHienTai: slRaChuyen,
             userName: currentUser.userName,
-            loSxId: lohang.ID_LoSanXuat,
+            loSxId: lohang.iD_LoSanXuat,
             mauSpId: 0,
             coSpId: 0,
             soluongRaChuyen: soLuongRaChuyen,

@@ -22,12 +22,13 @@ const garco10 = (state = initialState.garco10, action) => {
                 error: action.payload
             }
         case types.UPDATE_SOLUONG_RACHUYEN:
-            const index = state.lohang.findIndex((item) => item.ID_LoSanXuat == action.payload.loSxId);
+            const index = state.lohang.findIndex((item) => item.iD_LoSanXuat == action.payload.loSxId);
             const item = state.lohang[index];
+
             const updatedItem = {
                 ...item,
-                SoLuong_RaChuyen: action.payload.SoLuong_RaChuyen,
-                RaChuyen_NgayHienTai: action.payload.RaChuyen_NgayHienTai
+                soLuong_RaChuyen: action.payload.soLuong_RaChuyen,
+                raChuyen_NgayHienTai: action.payload.raChuyen_NgayHienTai
             };
             const newlohang = Object.assign([], state.lohang, { [index]: updatedItem });
             return {

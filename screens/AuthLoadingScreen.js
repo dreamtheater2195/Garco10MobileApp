@@ -24,7 +24,6 @@ class AuthLoadingScreen extends React.Component {
             'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
         }).then(() => {
             const { user } = this.props.auth;
-            console.log('InitialUser', user);
             this.props.navigation.navigate(user ? 'App' : 'Auth');
         });
     }

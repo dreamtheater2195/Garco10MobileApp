@@ -59,37 +59,37 @@ const { gridHeaderText, gridText, cardRowContainer, cardRowLabel, cardDateContai
 
 const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
     return (
-        <Card title={lohang.Ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
+        <Card title={lohang.ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Khách hàng: </Text>
-                <Text style={[cardRowText, { color: Colors.error }]}>{lohang.Ten_KhachHang}</Text>
+                <Text style={[cardRowText, { color: Colors.error }]}>{lohang.ten_KhachHang}</Text>
             </View>
 
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Style: </Text>
-                <Text style={cardRowText}>{lohang.StyleName}</Text>
+                <Text style={cardRowText}>{lohang.styleName}</Text>
             </View>
 
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Số PO: </Text>
-                <Text style={cardRowText}>{lohang.PO_No}</Text>
+                <Text style={cardRowText}>{lohang.pO_No}</Text>
             </View>
 
             <View style={cardRowContainer}>
                 <Text style={cardRowLabel}>Chuyền may: </Text>
-                <Text style={cardRowText}>{lohang.Ten_ChuyenMay}</Text>
+                <Text style={cardRowText}>{lohang.ten_ChuyenMay}</Text>
             </View>
 
             <View style={cardDateContainer}>
                 <Text style={cardDateText}>
                     Ngày bắt đầu:
                             {' '}
-                    {moment(lohang.Ngay_BatDau).format('DD/MM/YYYY')}
+                    {moment(lohang.ngay_BatDau).format('DD/MM/YYYY')}
                 </Text>
                 <Text style={cardDateText}>
                     Ngày kết thúc:
                             {' '}
-                    {moment(lohang.Ngay_KetThuc).format('DD/MM/YYYY')}
+                    {moment(lohang.ngay_KetThuc).format('DD/MM/YYYY')}
                 </Text>
             </View>
             <Grid style={{ flex: 1, marginTop: 5, marginBottom: 20 }}>
@@ -98,7 +98,7 @@ const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
                         <Text style={gridHeaderText}>Ra chuyền hôm nay</Text>
                     </Row>
                     <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.RaChuyen_NgayHienTai}</Text>
+                        <Text style={gridText}>{lohang.raChuyen_NgayHienTai}</Text>
                     </Row>
                 </Col>
 
@@ -107,7 +107,7 @@ const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
                         <Text style={gridHeaderText}>SL của lô</Text>
                     </Row>
                     <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.SoLuongCuaLo}</Text>
+                        <Text style={gridText}>{lohang.soLuongCuaLo}</Text>
                     </Row>
                 </Col>
 
@@ -116,7 +116,7 @@ const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
                         <Text style={gridHeaderText}>SL kế hoạch</Text>
                     </Row>
                     <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.SoLuong_KH}</Text>
+                        <Text style={gridText}>{lohang.soLuong_KH}</Text>
                     </Row>
                 </Col>
 
@@ -125,7 +125,7 @@ const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
                         <Text style={gridHeaderText}>SL ra chuyền</Text>
                     </Row>
                     <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.SoLuong_RaChuyen}</Text>
+                        <Text style={gridText}>{lohang.soLuong_RaChuyen}</Text>
                     </Row>
                 </Col>
 
@@ -134,7 +134,7 @@ const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
                         <Text style={gridHeaderText}>SL vào chuyền</Text>
                     </Row>
                     <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={gridText}>{lohang.SoLuong_VaoChuyen}</Text>
+                        <Text style={gridText}>{lohang.soLuong_VaoChuyen}</Text>
                     </Row>
                 </Col>
             </Grid>

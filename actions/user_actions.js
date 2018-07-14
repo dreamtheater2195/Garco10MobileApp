@@ -40,38 +40,41 @@ const checkLoginSuccess = (user) => {
 export const fetchCheckLogin = (username, password) => async dispatch => {
     dispatch(checkLogin());
     try {
-        const url = `${API_BASE_URL}/checkLogin?userName=${username}&passWord=${password}`;
-        const { data } = await axios.get(url);
-        if (data.results && data.results.length > 0) {
+        const url = `${API_BASE_URL}/Authenticate`;
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        const timer = setTimeout(() => {
+            source.cancel();
+        }, 7000);
+
+        const { data } = await axios.post(url, {
+            tenDangNhap: username,
+            matKhau: password
+        }, {
+                timeout: 5000,
+                cancelToken: source.token
+            });
+        if (data) {
+            clearTimeout(timer);
             var user = {
-                ID_NhanSu: data.results[0].ID_NhanSu,
-                TenDangNhap: data.results[0].TenDangNhap,
+                ID_NhanSu: data.iD_NhanSu,
+                TenDangNhap: data.tenDangNhap,
                 MatKhau: password,
-                Ten_BoPhan: data.results[0].Ten_BoPhan,
-                ID_DonVi: data.results[0].ID_DonVi,
-                Ten_DonVi: data.results[0].Ten_DonVi,
-                data: data.results
+                Ten_BoPhan: data.ten_BoPhan,
+                ID_DonVi: data.iD_DonVi,
+                Ten_DonVi: data.ten_DonVi
             }
             dispatch(checkLoginSuccess(user));
         } else {
             dispatch(checkLoginFailure('Wrong username or password.'));
         }
-    } catch (err) {
+    } catch (error) {
+        console.log('fetchCheckLogin error', error.message);
         dispatch(checkLoginFailure('Cannot connect to server. Try again later.'));
     }
 }
 
-export const fetchGetUserLogin = () => async dispatch => {
-    const user = await AsyncStorage.getItem('UID1234');
-    if (user) {
-        dispatch(checkLoginSuccess(JSON.parse(user)));
-    }
-    else {
-        dispatch(checkLoginSuccess(null));
-    }
-}
-
 export const logOut = () => async dispatch => {
-    await AsyncStorage.removeItem('UID1234');
     dispatch({ type: types.LOG_OUT });
 }
