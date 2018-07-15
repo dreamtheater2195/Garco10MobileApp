@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Animated, View, StyleSheet, ActivityIndicator, AsyncStorage, ScrollView, RefreshControl, TouchableOpacity, Picker, PickerIOS, Platform, InteractionManager, ToastAndroid, TouchableWithoutFeedback } from 'react-native';
-import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
+import { View, StyleSheet, ActivityIndicator, ToastAndroid } from 'react-native';
+import { Text } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoHangInfo from '../components/LoHangInfo';
 import AnimatedRoundButtonWithIcon from '../components/AnimatedRoundButtonWithIcon';
 import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Metrics, Fonts } from '../themes';
 import { updateSLRaChuyen } from '../actions';
-import * as Animatable from 'react-native-animatable';
-import fonts from '../themes/fonts';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,8 +14,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonContainer: {
-        flex: 6,
-        marginTop: 30
+        flex: 1.5
     },
     buttonRow: {
         flex: 1,

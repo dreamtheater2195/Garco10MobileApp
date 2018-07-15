@@ -38,7 +38,7 @@ class LoginScreen extends Component {
                 <ImageBackground style={styles.bgImage} source={Images.background}>
                     <View style={styles.loginView}>
                         <View style={styles.loginTitle}>
-                            <Image source={Images.whiteLogo} />
+                            <Image source={Images.whiteLogo} style={styles.whiteLogo} resizeMode="contain" />
                         </View>
                         <LoginForm
                             usernameText={userName}
@@ -79,10 +79,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row'
     },
     loginTitleText: {
         color: 'white',
         ...Fonts.style.h4
+    },
+    whiteLogo: {
+        flex: 1
     }
 });
 

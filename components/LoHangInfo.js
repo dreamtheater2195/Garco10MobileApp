@@ -1,31 +1,11 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Text, Card, Icon } from 'react-native-elements';
-import { Col, Row, Grid } from "react-native-easy-grid";
 import moment from 'moment';
 import { Colors, Fonts, Metrics } from '../themes';
-
+import LoHangThongSo from './LoHangThongSo';
+import { moderateScale } from '../themes/metrics';
 const styles = StyleSheet.create({
-    defaultRowContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    defaultColumnContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    gridHeaderText: {
-        fontFamily: Fonts.type.medium,
-        textAlign: 'center'
-    },
-    gridText: {
-        fontFamily: Fonts.type.regular,
-        textAlign: 'center'
-    },
     cardRowContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -33,10 +13,12 @@ const styles = StyleSheet.create({
         borderColor: Colors.steel,
         paddingTop: 5,
         paddingBottom: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        flexWrap: 'nowrap'
     },
     cardRowLabel: {
         fontFamily: Fonts.type.medium,
+        fontSize: moderateScale(Fonts.size.subTitle2)
     },
     cardDateContainer: {
         flex: 1,
@@ -46,98 +28,57 @@ const styles = StyleSheet.create({
     },
     cardDateText: {
         fontFamily: Fonts.type.light,
+        fontSize: moderateScale(Fonts.size.subTitle2),
         fontStyle: 'italic',
         color: Colors.coal
     },
     cardRowText: {
-        fontFamily: Fonts.type.regular
+        fontFamily: Fonts.type.regular,
+        fontSize: moderateScale(Fonts.size.subTitle2)
     }
 });
 
-const { gridHeaderText, gridText, cardRowContainer, cardRowLabel, cardDateContainer, cardDateText, cardRowText } = styles;
+const { cardRowContainer, cardRowLabel, cardDateContainer, cardDateText, cardRowText } = styles;
 
 
 const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
     return (
         <Card title={lohang.ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
-            <View style={cardRowContainer}>
-                <Text style={cardRowLabel}>Khách hàng: </Text>
-                <Text style={[cardRowText, { color: Colors.error }]}>{lohang.ten_KhachHang}</Text>
-            </View>
+            <View style={{ flex: 1 }}>
+                <View style={cardRowContainer}>
+                    <Text style={cardRowLabel}>Khách hàng: </Text>
+                    <Text style={[cardRowText]}>{lohang.ten_KhachHang}</Text>
+                </View>
 
-            <View style={cardRowContainer}>
-                <Text style={cardRowLabel}>Style: </Text>
-                <Text style={cardRowText}>{lohang.styleName}</Text>
-            </View>
+                <View style={cardRowContainer}>
+                    <Text style={cardRowLabel}>Style: </Text>
+                    <Text style={cardRowText}>{lohang.styleName}</Text>
+                </View>
 
-            <View style={cardRowContainer}>
-                <Text style={cardRowLabel}>Số PO: </Text>
-                <Text style={cardRowText}>{lohang.pO_No}</Text>
-            </View>
+                <View style={cardRowContainer}>
+                    <Text style={cardRowLabel}>Số PO: </Text>
+                    <Text style={cardRowText}>{lohang.pO_No}</Text>
+                </View>
 
-            <View style={cardRowContainer}>
-                <Text style={cardRowLabel}>Chuyền may: </Text>
-                <Text style={cardRowText}>{lohang.ten_ChuyenMay}</Text>
-            </View>
+                <View style={cardRowContainer}>
+                    <Text style={cardRowLabel}>Chuyền may: </Text>
+                    <Text style={cardRowText}>{lohang.ten_ChuyenMay}</Text>
+                </View>
 
-            <View style={cardDateContainer}>
-                <Text style={cardDateText}>
-                    Ngày bắt đầu:
+                <View style={cardDateContainer}>
+                    <Text style={cardDateText}>
+                        Bắt đầu:
                             {' '}
-                    {moment(lohang.ngay_BatDau).format('DD/MM/YYYY')}
-                </Text>
-                <Text style={cardDateText}>
-                    Ngày kết thúc:
+                        {moment(lohang.ngay_BatDau).format('DD/MM/YYYY')}
+                    </Text>
+                    <Text style={cardDateText}>
+                        Kết thúc:
                             {' '}
-                    {moment(lohang.ngay_KetThuc).format('DD/MM/YYYY')}
-                </Text>
+                        {moment(lohang.ngay_KetThuc).format('DD/MM/YYYY')}
+                    </Text>
+                </View>
             </View>
-            <Grid style={{ flex: 1, marginTop: 5, marginBottom: 20 }}>
-                <Col>
-                    <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                        <Text style={gridHeaderText}>Ra chuyền hôm nay</Text>
-                    </Row>
-                    <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.raChuyen_NgayHienTai}</Text>
-                    </Row>
-                </Col>
-
-                <Col>
-                    <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                        <Text style={gridHeaderText}>SL của lô</Text>
-                    </Row>
-                    <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.soLuongCuaLo}</Text>
-                    </Row>
-                </Col>
-
-                <Col>
-                    <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                        <Text style={gridHeaderText}>SL kế hoạch</Text>
-                    </Row>
-                    <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.soLuong_KH}</Text>
-                    </Row>
-                </Col>
-
-                <Col>
-                    <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1, borderRightWidth: 1 }}>
-                        <Text style={gridHeaderText}>SL ra chuyền</Text>
-                    </Row>
-                    <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1 }}>
-                        <Text style={gridText}>{lohang.soLuong_RaChuyen}</Text>
-                    </Row>
-                </Col>
-
-                <Col>
-                    <Row style={{ height: 40, justifyContent: 'center', borderBottomWidth: 1 }}>
-                        <Text style={gridHeaderText}>SL vào chuyền</Text>
-                    </Row>
-                    <Row style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={gridText}>{lohang.soLuong_VaoChuyen}</Text>
-                    </Row>
-                </Col>
-            </Grid>
+            <LoHangThongSo {...lohang} />
             {children}
         </Card>
     );

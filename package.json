@@ -12,6 +12,7 @@
     "react-native-config": "^0.11.5",
     "react-native-easy-grid": "^0.1.17",
     "react-native-elements": "^1.0.0-beta5",
+    "react-native-extended-stylesheet": "^0.8.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-picker": "^4.3.7",
     "react-native-snackbar": "^0.4.7",

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logOut, fetchDataLoHang, changeConnectionState, syncQueueData } from '../actions';
-import { View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl } from 'react-native';
+import { Animated, View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import LoHangInfo from '../components/LoHangInfo';
 import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Fonts, Metrics } from '../themes';
-import * as Animatable from 'react-native-animatable';
+import { Header } from 'react-navigation'
 
 const styles = StyleSheet.create({
     defaultRowContainer: {
@@ -35,9 +35,11 @@ const styles = StyleSheet.create({
 });
 const { defaultRowContainer, defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
 
+
 class LoHangScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             logingOut: false
         }
@@ -67,6 +69,7 @@ class LoHangScreen extends Component {
     }
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+
     }
 
     handleConnectionChange = (isConnected) => {
@@ -182,7 +185,7 @@ class LoHangScreen extends Component {
     }
 
     render() {
-        const dateString = moment().format('DD/MM/YYYY');
+
         if (this.props.garco10.fetching) {
             return (
                 <View>

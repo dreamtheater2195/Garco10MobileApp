@@ -1,11 +1,14 @@
 {
   "expo": {
-    "name": "m10-app",
+    "name": "Garco10 DHSX",
     "description": "This project is really great.",
     "slug": "m10-app",
     "privacy": "public",
     "sdkVersion": "28.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +25,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.miti.garco10dhsx"
     }
   }
 }
