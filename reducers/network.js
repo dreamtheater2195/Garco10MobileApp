@@ -29,6 +29,12 @@ const network = (state = initialState.network, action) => {
                 ...state,
                 actionQueue: _.without(state.actionQueue, action.payload)
             }
+        case types.REHYDRATION_COMPLETE:
+            return {
+                ...state,
+                syncing: false,
+                isConnected: false,
+            }
         default:
             return state;
     }
