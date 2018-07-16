@@ -13,9 +13,8 @@
     "orientation": "portrait",
     "icon": "./assets/ic_launcher.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#660033"
+      "image": "./assets/images/bg_screen1.jpg",
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

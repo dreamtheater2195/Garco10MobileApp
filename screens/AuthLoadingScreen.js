@@ -3,12 +3,13 @@ import {
     ActivityIndicator,
     StatusBar,
     View,
-    StyleSheet
+    StyleSheet,
+    ImageBackground
 } from 'react-native';
 import { fetchGetUserLogin } from '../actions';
 import { connect } from 'react-redux';
-import { Font, AppLoading } from 'expo';
-
+import { Font } from 'expo';
+import { Images, Metrics } from '../themes';
 class AuthLoadingScreen extends React.Component {
 
     state = {
@@ -33,8 +34,10 @@ class AuthLoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ActivityIndicator size="large" />
-                <StatusBar barStyle="default" />
+                <ImageBackground style={styles.bgImage} source={Images.background}>
+                    <ActivityIndicator size="large" />
+                    <StatusBar barStyle="default" />
+                </ImageBackground>
             </View>
         );
     }
@@ -42,10 +45,17 @@ class AuthLoadingScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1
     },
+    bgImage: {
+        flex: 1,
+        top: 0,
+        left: 0,
+        width: Metrics.screenWidth,
+        height: Metrics.screenHeight,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
 
 const mapStateToProps = ({ auth, rehydrated }) => ({

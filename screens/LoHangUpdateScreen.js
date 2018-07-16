@@ -122,7 +122,8 @@ class LoHangUpdateScreen extends Component {
                 />}
                 <Text style={{
                     ...Fonts.style.body2,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    color: Colors.snow
                 }}>
                     {isConnected ? "Đã kết nối vào mạng" : "Không có kết nối mạng"}
                 </Text>
@@ -145,7 +146,8 @@ class LoHangUpdateScreen extends Component {
                 />}
                 <Text style={{
                     ...Fonts.style.body2,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    color: Colors.snow
                 }}>
                     "Đang đồng bộ dữ liệu"
                 </Text>
