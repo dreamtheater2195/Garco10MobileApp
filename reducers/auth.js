@@ -32,6 +32,12 @@ const auth = (state = initialState.auth, action) => {
             }
         case types.LOG_OUT:
             return initialState.auth;
+        case types.REHYDRATION_COMPLETE:
+            return {
+                ...state,
+                fetching: false,
+                error: ''
+            }
         default:
             return state;
     }

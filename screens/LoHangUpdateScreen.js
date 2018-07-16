@@ -194,7 +194,7 @@ class LoHangUpdateScreen extends Component {
                         </View>
                     </View>
                 </LoHangInfo>
-                {this.renderSyncingStatusBar()}
+                {/* {this.renderSyncingStatusBar()} */}
             </View >
         );
     }

@@ -23,13 +23,20 @@ class AuthLoadingScreen extends React.Component {
             'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),
             'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
         }).then(() => {
-            const { user } = this.props.auth;
-            this.props.navigation.navigate(user ? 'App' : 'Auth');
-        });
+            const { auth, rehydrated } = this.props;
+            if (rehydrated) {
+                this.props.navigation.navigate(auth.user ? 'App' : 'Auth');
+            }
+        })
     }
 
     render() {
-        return <AppLoading />;
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="large" />
+                <StatusBar barStyle="default" />
+            </View>
+        );
     }
 }
 
@@ -41,8 +48,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({ auth }) => ({
-    auth
+const mapStateToProps = ({ auth, rehydrated }) => ({
+    auth,
+    rehydrated
 });
 
 export default connect(mapStateToProps, { fetchGetUserLogin })(AuthLoadingScreen);

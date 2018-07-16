@@ -257,7 +257,7 @@ class LoHangScreen extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {this.renderNetworkStatusBar()}
-                {this.renderSyncingStatusBar()}
+                {/* {this.renderSyncingStatusBar()} */}
                 <ScrollView
                     refreshControl={
                         <RefreshControl

@@ -1,7 +1,7 @@
 export default {
     auth: {
-        userName: 'hoadl',
-        passWord: '123456',
+        userName: '',
+        passWord: '',
         fetching: false,
         error: '',
         user: null
@@ -15,5 +15,6 @@ export default {
         isConnected: false,
         syncing: false,
         actionQueue: []
-    }
+    },
+    rehydrated: false
 }

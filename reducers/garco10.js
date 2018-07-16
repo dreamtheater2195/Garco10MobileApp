@@ -35,6 +35,12 @@ const garco10 = (state = initialState.garco10, action) => {
                 ...state,
                 lohang: newlohang
             }
+        case types.REHYDRATION_COMPLETE:
+            return {
+                ...state,
+                fetching: false,
+                error: ''
+            }
         default:
             return state;
     }

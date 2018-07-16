@@ -5,6 +5,7 @@ import LoHangScreen from '../screens/LoHangScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import { Colors } from '../themes';
+import { View, StatusBar } from 'react-native';
 
 const AppStack = createStackNavigator({
     LoHang: LoHangScreen,

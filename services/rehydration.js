@@ -2,10 +2,10 @@ import ReduxPersist from '../config/reduxPersist';
 import { AsyncStorage } from 'react-native';
 import { persistStore } from 'redux-persist';
 import DebugConfig from '../config/debugConfig';
-
+import * as types from '../actions/types';
 const updateReducers = (store) => {
     const reducerVersion = ReduxPersist.reducerVersion;
-    const startup = () => console.log('Rehydration completed');
+    const startup = () => store.dispatch({ type: types.REHYDRATION_COMPLETE });
     // Check to ensure latest reducer version
     AsyncStorage.getItem('reducerVersion').then((localVersion) => {
         if (localVersion !== reducerVersion) {
