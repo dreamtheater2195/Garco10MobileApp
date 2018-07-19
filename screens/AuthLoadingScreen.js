@@ -17,18 +17,17 @@ class AuthLoadingScreen extends React.Component {
         fontLoaded: false
     }
 
-    async componentDidMount() {
-        Font.loadAsync({
-            'roboto-bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'roboto-light': require('../assets/fonts/Roboto-Light.ttf'),
-            'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),
-            'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
-        }).then(() => {
-            const { auth, rehydrated } = this.props;
-            if (rehydrated) {
-                this.props.navigation.navigate(auth.user ? 'App' : 'Auth');
-            }
-        })
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.rehydrated) {
+            Font.loadAsync({
+                'roboto-bold': require('../assets/fonts/Roboto-Bold.ttf'),
+                'roboto-light': require('../assets/fonts/Roboto-Light.ttf'),
+                'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),
+                'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            }).then(() => {
+                this.props.navigation.navigate(nextProps.auth.user ? 'App' : 'Auth');
+            });
+        }
     }
 
     render() {
