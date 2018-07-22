@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logOut, fetchDataLoHang, changeConnectionState, syncQueueData } from '../actions';
+import { logOut, changeConnectionState, syncData } from '../actions';
 import { Animated, View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const { defaultRowContainer, defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
+const { defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
 
 
 class LoHangScreen extends Component {
@@ -92,18 +92,7 @@ class LoHangScreen extends Component {
     }
 
     fetchData = () => {
-        this.props.syncQueueData().then((done) => {
-            if (done) {
-                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
-            }
-        }).catch((err) => {
-            console.log('syncQueueData error', err);
-            ToastAndroid.showWithGravity(
-                'Không thể đồng bộ dữ liệu với máy chủ',
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-            );
-        });
+        this.props.syncData();
     }
 
     logOutUser = () => {
@@ -287,9 +276,8 @@ export default connect(
     mapStateToProps,
     {
         logOut,
-        fetchDataLoHang,
         changeConnectionState,
-        syncQueueData
+        syncData
     }
 )(LoHangScreen);
 

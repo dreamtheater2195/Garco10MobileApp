@@ -41,6 +41,12 @@ const garco10 = (state = initialState.garco10, action) => {
                 fetching: false,
                 error: ''
             }
+        case types.LOG_OUT:
+            return {
+                ...state,
+                fetching: false,
+                error: ''
+            }
         default:
             return state;
     }

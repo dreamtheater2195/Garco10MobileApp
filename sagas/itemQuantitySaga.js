@@ -1,33 +1,6 @@
 import { take, call, actionChannel, select, put } from 'redux-saga/effects';
 import * as types from '../actions';
-import { API_BASE_URL } from '../constants/api';
-import axios from 'axios';
-
-function requestUpdateItemQuantity(currentRaChuyen) {
-    const url = `${API_BASE_URL}/LoSanXuats`;
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-
-    const requestConfig = {
-        method: 'put',
-        url: url,
-        timeout: 2000,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        data: currentRaChuyen,
-        cancelToken: source.token
-    };
-    const timer = setTimeout(() => {
-        source.cancel();
-    }, 3000);
-
-    return axios(requestConfig).then(response => {
-        clearTimeout(timer);
-        return response.data;
-    }).catch(err => { throw err });
-}
+import * as api from '../services/api';
 
 function* handleItemQuantityChange(payload) {
     const isConnected = yield select(state => state.network.isConnected);
@@ -44,13 +17,8 @@ function* handleItemQuantityChange(payload) {
 
     if (isConnected) {
         try {
-            yield put({ type: types.SYNC_DATA });
-
-            const data = yield call(requestUpdateItemQuantity, currentRaChuyen);
-            console.log('requestUpdateItemQuantity', data);
-            if (data == 1) {
-                yield put({ type: types.SYNC_DATA_STOP });
-            } else if (data == -1) {
+            const data = yield call(api.requestUpdateItemQuantity, currentRaChuyen);
+            if (data == -1) {
                 throw new Error;
             }
         } catch (err) {

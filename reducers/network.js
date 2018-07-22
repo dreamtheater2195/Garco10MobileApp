@@ -35,6 +35,11 @@ const network = (state = initialState.network, action) => {
                 syncing: false,
                 isConnected: false,
             }
+        case types.LOG_OUT:
+            return {
+                ...state,
+                syncing: false
+            }
         default:
             return state;
     }
