@@ -13,7 +13,7 @@ const garco10 = (state = initialState.garco10, action) => {
                 ...state,
                 fetching: false,
                 error: '',
-                lohang: action.payload.lohang
+                lohang: action.payload
             }
         case types.FETCH_LOHANG_FAILURE:
             return {

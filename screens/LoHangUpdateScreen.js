@@ -100,11 +100,7 @@ class LoHangUpdateScreen extends Component {
             nguoiNhapId: currentUser.ID_NhanSu,
             createDate: new Date()
         };
-        this.props.updateSLRaChuyen(payload).then(() => {
-            console.log('+', soLuongRaChuyen);
-        }).catch((err) => {
-            console.log('updateSLRaChuyen Error', err);
-        });
+        this.props.updateSLRaChuyen(payload);
     }
 
     renderNetworkStatusBar = () => {

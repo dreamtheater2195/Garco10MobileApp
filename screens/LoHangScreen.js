@@ -69,7 +69,6 @@ class LoHangScreen extends Component {
     }
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
-
     }
 
     handleConnectionChange = (isConnected) => {
@@ -83,20 +82,19 @@ class LoHangScreen extends Component {
         if (!nextProps.auth.user) {
             this.props.navigation.navigate('Auth');
         }
+        if (nextProps.garco10.error) {
+            ToastAndroid.showWithGravity(
+                'Không thể lấy danh sách lô sản xuất mới nhất',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
+        }
     }
 
     fetchData = () => {
         this.props.syncQueueData().then((done) => {
             if (done) {
-                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi).then(() => {
-                    console.log('done fetching new data');
-                }).catch(err => {
-                    ToastAndroid.showWithGravity(
-                        'Không thể lấy danh sách lô sản xuất mới nhất',
-                        ToastAndroid.SHORT,
-                        ToastAndroid.BOTTOM,
-                    );
-                });
+                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi);
             }
         }).catch((err) => {
             console.log('syncQueueData error', err);
@@ -200,7 +198,7 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-        if (this.props.garco10.lohang.length === 0) {
+        if (!this.props.garco10.lohang || this.props.garco10.lohang.length === 0) {
             return (
                 <ScrollView
                     contentContainerStyle={defaultColumnContainer}
