@@ -1,7 +1,4 @@
 import * as types from './types';
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import { API_BASE_URL } from '../constants/api';
 
 export const updateUsernameInputText = (text) => {
     return {
