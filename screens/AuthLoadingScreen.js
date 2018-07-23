@@ -10,6 +10,7 @@ import { fetchGetUserLogin } from '../actions';
 import { connect } from 'react-redux';
 import { Font } from 'expo';
 import { Images, Metrics } from '../themes';
+import { currentUserSelector } from '../selectors';
 class AuthLoadingScreen extends React.Component {
 
     state = {
@@ -24,9 +25,9 @@ class AuthLoadingScreen extends React.Component {
             'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),
             'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
         }).then(() => {
-            const { auth, rehydrated } = this.props;
+            const { currentUser, rehydrated } = this.props;
             if (rehydrated) {
-                this.props.navigation.navigate(auth.user ? 'App' : 'Auth');
+                this.props.navigation.navigate(currentUser ? 'App' : 'Auth');
             }
         })
     }
@@ -58,9 +59,11 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = ({ auth, rehydrated }) => ({
-    auth,
-    rehydrated
-});
+const mapStateToProps = (state) => {
+    return {
+        currentUser: currentUserSelector(state),
+        rehydrated: state.rehydrated
+    }
+};
 
 export default connect(mapStateToProps, { fetchGetUserLogin })(AuthLoadingScreen);

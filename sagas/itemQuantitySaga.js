@@ -1,9 +1,9 @@
 import { take, call, actionChannel, select, put } from 'redux-saga/effects';
 import * as types from '../actions';
 import * as api from '../services/api';
-
+import { isConnectedSelector } from '../selectors';
 function* handleItemQuantityChange(payload) {
-    const isConnected = yield select(state => state.network.isConnected);
+    const isConnected = yield select(isConnectedSelector);
     const currentRaChuyen = {
         id_LoSanXuat: payload.loSxId,
         id_MauSanPham: payload.mauSpId,

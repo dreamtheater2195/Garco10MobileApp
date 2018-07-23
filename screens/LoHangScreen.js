@@ -9,7 +9,7 @@ import LoHangInfo from '../components/LoHangInfo';
 import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Fonts, Metrics } from '../themes';
 import { Header } from 'react-navigation'
-
+import { isConnectedSelector } from '../selectors';
 const styles = StyleSheet.create({
     defaultRowContainer: {
         flex: 1,
@@ -97,6 +97,7 @@ class LoHangScreen extends Component {
 
     logOutUser = () => {
         this.setState({ logingOut: true });
+        console.log(this.state.logingOut);
     }
 
     logOutConfirm = () => {
@@ -187,28 +188,7 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-        if (!this.props.garco10.lohang || this.props.garco10.lohang.length === 0) {
-            return (
-                <ScrollView
-                    contentContainerStyle={defaultColumnContainer}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.props.garco10.fetching}
-                            onRefresh={this.fetchData}
-                            colors={[Colors.ember]}
-                            tintColor="white"
-                            title="loading..."
-                            titleColor="white"
-                            progressBackgroundColor="white"
-                        />
-                    }
-                >
-                    <Text style={Fonts.style.body1}>
-                        Không có lô sản xuất
-                    </Text>
-                </ScrollView>
-            );
-        }
+
         if (this.state.logingOut) {
             return (
                 <View style={defaultColumnContainer}>
@@ -243,6 +223,29 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
+
+        if (!this.props.garco10.lohang || this.props.garco10.lohang.length === 0) {
+            return (
+                <ScrollView
+                    contentContainerStyle={defaultColumnContainer}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.props.garco10.fetching}
+                            onRefresh={this.fetchData}
+                            colors={[Colors.ember]}
+                            tintColor="white"
+                            title="loading..."
+                            titleColor="white"
+                            progressBackgroundColor="white"
+                        />
+                    }
+                >
+                    <Text style={Fonts.style.body1}>
+                        Không có lô sản xuất
+                    </Text>
+                </ScrollView>
+            );
+        }
         return (
             <View style={{ flex: 1 }}>
                 {this.renderNetworkStatusBar()}
@@ -270,7 +273,7 @@ class LoHangScreen extends Component {
 const mapStateToProps = (state) => ({
     garco10: state.garco10,
     auth: state.auth,
-    isConnected: state.network.isConnected
+    isConnected: isConnectedSelector(state)
 });
 export default connect(
     mapStateToProps,
