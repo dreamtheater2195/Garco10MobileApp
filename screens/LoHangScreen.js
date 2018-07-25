@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logOut, changeConnectionState, syncData } from '../actions';
-import { Animated, View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
+import { Animated, View, StyleSheet, FlatList, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -127,6 +127,20 @@ class LoHangScreen extends Component {
         }
     }
 
+    renderItem = ({ item, index }) => {
+        return (
+            <LoHangInfo lohang={item}>
+                <Button
+                    icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
+                    title="Cập nhật ra chuyền"
+                    buttonStyle={{ backgroundColor: Colors.darkPink }}
+                    titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
+                    onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
+                />
+            </LoHangInfo>
+        )
+    }
+
     renderNetworkStatusBar = () => {
         const { isConnected } = this.props;
         return (
@@ -249,8 +263,10 @@ class LoHangScreen extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {this.renderNetworkStatusBar()}
-                {/* {this.renderSyncingStatusBar()} */}
-                <ScrollView
+                <FlatList
+                    data={this.props.garco10.lohang}
+                    keyExtractor={(item) => item.iD_LoSanXuat.toString()}
+                    renderItem={this.renderItem}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.props.garco10.fetching}
@@ -262,9 +278,7 @@ class LoHangScreen extends Component {
                             progressBackgroundColor="white"
                         />
                     }
-                >
-                    {this.renderLoHang()}
-                </ScrollView>
+                />
             </View>
         )
     }
