@@ -2,6 +2,8 @@ import reducers from '../reducers';
 import ReduxPersist from '../config/reduxPersist';
 import { persistReducer } from 'redux-persist';
 import configureStore from './configureStore';
+import rootSaga from '../sagas';
+
 export default () => {
     let finalReducers = reducers;
 
@@ -10,7 +12,7 @@ export default () => {
         finalReducers = persistReducer(persistConfig, reducers);
     }
 
-    let { store } = configureStore(finalReducers);
+    let { store, sagasManager, sagaMiddleware } = configureStore(finalReducers, rootSaga);
 
     if (module.hot) {
         module.hot.accept(() => {
@@ -21,6 +23,12 @@ export default () => {
                     ? persistReducer(ReduxPersist.storeConfig, nextRootReducer)
                     : nextRootReducer
             );
+
+            const newYeildedSagas = require('../sagas').default;
+            sagasManager.cancel();
+            sagasManager.done.then(() => {
+                sagasManager = sagaMiddleware.run(newYeildedSagas);
+            })
         });
     }
 

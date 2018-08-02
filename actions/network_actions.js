@@ -6,3 +6,15 @@ export const changeConnectionState = (isConnected) => {
         payload: isConnected
     };
 };
+
+export const syncData = () => {
+    return {
+        type: types.SYNC_DATA
+    }
+}
+
+export const syncDataStop = () => {
+    return {
+        type: types.SYNC_DATA_STOP
+    }
+}

@@ -23,11 +23,13 @@
     "redux-persist-transform-filter": "0.0.18",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.3.0",
+    "reselect": "^3.0.1",
     "rn-sliding-up-panel": "^1.2.1"
   },
   "devDependencies": {
     "reactotron-react-native": "^1.14.0",
     "reactotron-redux": "^1.13.0",
+    "reactotron-redux-saga": "^2.0.0",
     "redux-logger": "^3.0.6"
   }
 }

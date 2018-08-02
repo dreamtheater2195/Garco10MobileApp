@@ -13,7 +13,7 @@ const garco10 = (state = initialState.garco10, action) => {
                 ...state,
                 fetching: false,
                 error: '',
-                lohang: action.payload.lohang
+                lohang: action.payload
             }
         case types.FETCH_LOHANG_FAILURE:
             return {
@@ -36,6 +36,12 @@ const garco10 = (state = initialState.garco10, action) => {
                 lohang: newlohang
             }
         case types.REHYDRATION_COMPLETE:
+            return {
+                ...state,
+                fetching: false,
+                error: ''
+            }
+        case types.LOG_OUT:
             return {
                 ...state,
                 fetching: false,

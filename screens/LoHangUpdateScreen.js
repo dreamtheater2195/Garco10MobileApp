@@ -7,6 +7,7 @@ import AnimatedRoundButtonWithIcon from '../components/AnimatedRoundButtonWithIc
 import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Metrics, Fonts } from '../themes';
 import { updateSLRaChuyen } from '../actions';
+import { loHangsSelector, currentUserSelector, isConnectedSelector, syncingSelector } from '../selectors';
 
 const styles = StyleSheet.create({
     container: {
@@ -100,11 +101,7 @@ class LoHangUpdateScreen extends Component {
             nguoiNhapId: currentUser.ID_NhanSu,
             createDate: new Date()
         };
-        this.props.updateSLRaChuyen(payload).then(() => {
-            console.log('+', soLuongRaChuyen);
-        }).catch((err) => {
-            console.log('updateSLRaChuyen Error', err);
-        });
+        this.props.updateSLRaChuyen(payload);
     }
 
     renderNetworkStatusBar = () => {
@@ -204,12 +201,11 @@ class LoHangUpdateScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     const index = ownProps.navigation.getParam('lohangIndex');
-    const lohang = state.garco10.lohang[index];
     return {
-        lohang,
-        currentUser: state.auth.user,
-        isConnected: state.network.isConnected,
-        syncing: state.network.syncing
+        lohang: loHangsSelector(state)[index],
+        currentUser: currentUserSelector(state),
+        isConnected: isConnectedSelector(state),
+        syncing: syncingSelector(state)
     }
 }
 

@@ -8,7 +8,7 @@ import {
     Image
 } from 'react-native';
 import LoginForm from '../components/LoginForm';
-import { fetchCheckLogin, updatePasswordInputText, updateUsernameInputText } from '../actions';
+import { checkLogin, updatePasswordInputText, updateUsernameInputText } from '../actions';
 import { connect } from 'react-redux';
 import { Images, Metrics, Fonts } from '../themes';
 
@@ -27,7 +27,7 @@ class LoginScreen extends Component {
         const { fetching, userName, passWord } = this.props.auth;
         if (fetching) return;
 
-        this.props.fetchCheckLogin(userName, passWord);
+        this.props.checkLogin(userName, passWord);
     }
 
     render() {
@@ -97,7 +97,7 @@ const mapStateToProps = (state) => ({
 export default connect(
     mapStateToProps,
     {
-        fetchCheckLogin,
+        checkLogin,
         updatePasswordInputText,
         updateUsernameInputText
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logOut, fetchDataLoHang, changeConnectionState, syncQueueData } from '../actions';
-import { Animated, View, StyleSheet, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
+import { logOut, changeConnectionState, syncData } from '../actions';
+import { Animated, View, StyleSheet, FlatList, ScrollView, Dimensions, ToastAndroid, NetInfo, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { Icon, Button, Overlay, Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -9,7 +9,7 @@ import LoHangInfo from '../components/LoHangInfo';
 import AnimatedStatusBar from '../components/AnimatedStatusBar';
 import { Colors, Fonts, Metrics } from '../themes';
 import { Header } from 'react-navigation'
-
+import { isConnectedSelector } from '../selectors';
 const styles = StyleSheet.create({
     defaultRowContainer: {
         flex: 1,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
 
 });
-const { defaultRowContainer, defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
+const { defaultColumnContainer, overlayButton, overlayButtonContainer } = styles;
 
 
 class LoHangScreen extends Component {
@@ -69,7 +69,6 @@ class LoHangScreen extends Component {
     }
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
-
     }
 
     handleConnectionChange = (isConnected) => {
@@ -83,33 +82,22 @@ class LoHangScreen extends Component {
         if (!nextProps.auth.user) {
             this.props.navigation.navigate('Auth');
         }
-    }
-
-    fetchData = () => {
-        this.props.syncQueueData().then((done) => {
-            if (done) {
-                this.props.fetchDataLoHang(0, this.props.auth.user.ID_DonVi).then(() => {
-                    console.log('done fetching new data');
-                }).catch(err => {
-                    ToastAndroid.showWithGravity(
-                        'Không thể lấy danh sách lô sản xuất mới nhất',
-                        ToastAndroid.SHORT,
-                        ToastAndroid.BOTTOM,
-                    );
-                });
-            }
-        }).catch((err) => {
-            console.log('syncQueueData error', err);
+        if (nextProps.garco10.error) {
             ToastAndroid.showWithGravity(
-                'Không thể đồng bộ dữ liệu với máy chủ',
+                'Không thể lấy danh sách lô sản xuất mới nhất',
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
             );
-        });
+        }
+    }
+
+    fetchData = () => {
+        this.props.syncData();
     }
 
     logOutUser = () => {
         this.setState({ logingOut: true });
+        console.log(this.state.logingOut);
     }
 
     logOutConfirm = () => {
@@ -120,23 +108,18 @@ class LoHangScreen extends Component {
         this.setState({ logingOut: false });
     }
 
-    renderLoHang = () => {
-        const { garco10 } = this.props;
-        if (garco10.lohang.length > 0) {
-            return garco10.lohang.map((item, index) => {
-                return (
-                    <LoHangInfo lohang={item} key={index}>
-                        <Button
-                            icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
-                            title="Cập nhật ra chuyền"
-                            buttonStyle={{ backgroundColor: Colors.darkPink }}
-                            titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
-                            onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
-                        />
-                    </LoHangInfo>
-                );
-            });
-        }
+    renderItem = ({ item, index }) => {
+        return (
+            <LoHangInfo lohang={item}>
+                <Button
+                    icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
+                    title="Cập nhật ra chuyền"
+                    buttonStyle={{ backgroundColor: Colors.darkPink }}
+                    titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
+                    onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
+                />
+            </LoHangInfo>
+        )
     }
 
     renderNetworkStatusBar = () => {
@@ -200,28 +183,7 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-        if (this.props.garco10.lohang.length === 0) {
-            return (
-                <ScrollView
-                    contentContainerStyle={defaultColumnContainer}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.props.garco10.fetching}
-                            onRefresh={this.fetchData}
-                            colors={[Colors.ember]}
-                            tintColor="white"
-                            title="loading..."
-                            titleColor="white"
-                            progressBackgroundColor="white"
-                        />
-                    }
-                >
-                    <Text style={Fonts.style.body1}>
-                        Không có lô sản xuất
-                    </Text>
-                </ScrollView>
-            );
-        }
+
         if (this.state.logingOut) {
             return (
                 <View style={defaultColumnContainer}>
@@ -256,11 +218,11 @@ class LoHangScreen extends Component {
                 </View>
             )
         }
-        return (
-            <View style={{ flex: 1 }}>
-                {this.renderNetworkStatusBar()}
-                {/* {this.renderSyncingStatusBar()} */}
+
+        if (!this.props.garco10.lohang || this.props.garco10.lohang.length === 0) {
+            return (
                 <ScrollView
+                    contentContainerStyle={defaultColumnContainer}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.props.garco10.fetching}
@@ -273,8 +235,31 @@ class LoHangScreen extends Component {
                         />
                     }
                 >
-                    {this.renderLoHang()}
+                    <Text style={Fonts.style.body1}>
+                        Không có lô sản xuất
+                    </Text>
                 </ScrollView>
+            );
+        }
+        return (
+            <View style={{ flex: 1 }}>
+                {this.renderNetworkStatusBar()}
+                <FlatList
+                    data={this.props.garco10.lohang}
+                    keyExtractor={(item) => item.iD_LoSanXuat.toString()}
+                    renderItem={this.renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.props.garco10.fetching}
+                            onRefresh={this.fetchData}
+                            colors={[Colors.ember]}
+                            tintColor="white"
+                            title="loading..."
+                            titleColor="white"
+                            progressBackgroundColor="white"
+                        />
+                    }
+                />
             </View>
         )
     }
@@ -283,15 +268,14 @@ class LoHangScreen extends Component {
 const mapStateToProps = (state) => ({
     garco10: state.garco10,
     auth: state.auth,
-    isConnected: state.network.isConnected
+    isConnected: isConnectedSelector(state)
 });
 export default connect(
     mapStateToProps,
     {
         logOut,
-        fetchDataLoHang,
         changeConnectionState,
-        syncQueueData
+        syncData
     }
 )(LoHangScreen);
 
