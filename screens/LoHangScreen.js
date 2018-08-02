@@ -108,25 +108,6 @@ class LoHangScreen extends Component {
         this.setState({ logingOut: false });
     }
 
-    renderLoHang = () => {
-        const { garco10 } = this.props;
-        if (garco10.lohang.length > 0) {
-            return garco10.lohang.map((item, index) => {
-                return (
-                    <LoHangInfo lohang={item} key={index}>
-                        <Button
-                            icon={<Icon name="ios-create-outline" type="ionicon" color={Colors.snow} />}
-                            title="Cập nhật ra chuyền"
-                            buttonStyle={{ backgroundColor: Colors.darkPink }}
-                            titleStyle={{ fontFamily: Fonts.type.medium, color: Colors.snow }}
-                            onPress={() => this.props.navigation.navigate('LoHangUpdate', { lohangIndex: index })}
-                        />
-                    </LoHangInfo>
-                );
-            });
-        }
-    }
-
     renderItem = ({ item, index }) => {
         return (
             <LoHangInfo lohang={item}>
