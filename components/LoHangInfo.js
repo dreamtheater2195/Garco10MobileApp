@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Text, Card, Icon } from 'react-native-elements';
 import moment from 'moment';
@@ -40,48 +40,50 @@ const styles = StyleSheet.create({
 
 const { cardRowContainer, cardRowLabel, cardDateContainer, cardDateText, cardRowText } = styles;
 
+export class LoHangInfo extends PureComponent {
+    render() {
+        const { lohang, children, wrapperStyle, containerStyle } = this.props;
+        return (
+            <Card title={lohang.ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
+                <View style={{ flex: 1 }}>
+                    <View style={cardRowContainer}>
+                        <Text style={cardRowLabel}>Khách hàng: </Text>
+                        <Text style={[cardRowText]}>{lohang.ten_KhachHang}</Text>
+                    </View>
 
-const LoHangInfo = ({ lohang, children, wrapperStyle, containerStyle }) => {
-    return (
-        <Card title={lohang.ma_LoSanXuat} wrapperStyle={[{ flex: 1 }, wrapperStyle]} containerStyle={[{ flex: 1 }, containerStyle]}>
-            <View style={{ flex: 1 }}>
-                <View style={cardRowContainer}>
-                    <Text style={cardRowLabel}>Khách hàng: </Text>
-                    <Text style={[cardRowText]}>{lohang.ten_KhachHang}</Text>
-                </View>
+                    <View style={cardRowContainer}>
+                        <Text style={cardRowLabel}>Style: </Text>
+                        <Text style={cardRowText}>{lohang.styleName}</Text>
+                    </View>
 
-                <View style={cardRowContainer}>
-                    <Text style={cardRowLabel}>Style: </Text>
-                    <Text style={cardRowText}>{lohang.styleName}</Text>
-                </View>
+                    <View style={cardRowContainer}>
+                        <Text style={cardRowLabel}>Số PO: </Text>
+                        <Text style={cardRowText}>{lohang.pO_No}</Text>
+                    </View>
 
-                <View style={cardRowContainer}>
-                    <Text style={cardRowLabel}>Số PO: </Text>
-                    <Text style={cardRowText}>{lohang.pO_No}</Text>
-                </View>
+                    <View style={cardRowContainer}>
+                        <Text style={cardRowLabel}>Chuyền may: </Text>
+                        <Text style={cardRowText}>{lohang.ten_ChuyenMay}</Text>
+                    </View>
 
-                <View style={cardRowContainer}>
-                    <Text style={cardRowLabel}>Chuyền may: </Text>
-                    <Text style={cardRowText}>{lohang.ten_ChuyenMay}</Text>
-                </View>
-
-                <View style={cardDateContainer}>
-                    <Text style={cardDateText}>
-                        Bắt đầu:
+                    <View style={cardDateContainer}>
+                        <Text style={cardDateText}>
+                            Bắt đầu:
                             {' '}
-                        {moment(lohang.ngay_BatDau).format('DD/MM/YYYY')}
-                    </Text>
-                    <Text style={cardDateText}>
-                        Kết thúc:
+                            {moment(lohang.ngay_BatDau).format('DD/MM/YYYY')}
+                        </Text>
+                        <Text style={cardDateText}>
+                            Kết thúc:
                             {' '}
-                        {moment(lohang.ngay_KetThuc).format('DD/MM/YYYY')}
-                    </Text>
+                            {moment(lohang.ngay_KetThuc).format('DD/MM/YYYY')}
+                        </Text>
+                    </View>
                 </View>
-            </View>
-            <LoHangThongSo {...lohang} />
-            {children}
-        </Card>
-    );
-};
+                <LoHangThongSo {...lohang} />
+                {children}
+            </Card>
+        );
+    };
+}
 
 export default LoHangInfo;
